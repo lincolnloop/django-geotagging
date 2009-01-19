@@ -4,11 +4,8 @@ from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
-from geotagging.utils.serialized_data_field.fields import SerializedDataField
-from geotagging.signals import parse_data_file
 
-
-class BaseGeoAbstractModel(models.Model):
+class BaseAbstractModel(models.Model):
     """
     An abstract base class that any custom generic geo models probably should
     subclass.
@@ -17,61 +14,57 @@ class BaseGeoAbstractModel(models.Model):
     # Content-object field
     content_type   = models.ForeignKey(ContentType,
             related_name="content_type_set_for_%(class)s")
-    object_pk      = models.TextField(_('object ID'))
-    content_object = generic.GenericForeignKey(ct_field="content_type", fk_field="object_pk")
-    data_file = models.FileField(upload_to="geo_files")
-    metadata = SerializedDataField(blank=True, editable=False)
+    object_id      = models.CharField(_('object ID'),max_length=50)
+    object = generic.GenericForeignKey(ct_field="content_type", fk_field="object_id")
     objects = models.GeoManager()
 
     class Meta:
         abstract = True
 
-            
-class GeoMultiLine(BaseGeoAbstractModel):
+
+class MultiLine(BaseAbstractModel):
     """
-    A multi-line implementation. Use the metadata field to store
-    additional additional details about the geo object.
-    Helper functions are provided that assume metadata is a list of
-    dictionaries with any of the following keys:
-    
-    * time
-    * elevation
-    
+
     """
     multi_line = models.MultiLineStringField()
 
     def __unicode__(self):
-        return 'GeoMultiLine for %s' % self.content_object
-            
-            
-    def miles(self):
-        t = GeoMultiLine.objects.length().get(pk=self.pk)
-        return t.length.mi
+        return 'MultiLine for %s' % self.object
 
-    def intersecting_lines(self):
-        return GeoMultiLine.objects.filter(
-                    multi_line__intersects=self.multi_line).exclude(pk=self.pk)
-        
-    @property
-    def elevations(self):   
-        try:
-            return [d['ele'] for d in self.metadata]
-        except KeyError:
-            return None
-            
-    def max_elevation(self):
-        if self.elevations:
-            self.elevations.sort()
-            return e[-1]
-        else:
-            return None
-            
-    def min_elevation(self):
-        if self.elevations:
-            self.elevations.sort()
-            return e[0]
-        else:
-            return None
-            
+class Line(BaseAbstractModel):
+    """
 
-models.signals.pre_save.connect(parse_data_file, sender=GeoMultiLine)
+    """
+    multi_line = models.LineStringField()
+
+    def __unicode__(self):
+        return 'Line for %s' % self.object
+
+class Polygon(BaseAbstractModel):
+    """
+
+    """
+    polygon = models.PolygonField()
+
+    def __unicode__(self):
+        return 'polygon for %s' % self.object
+
+
+class Point(BaseAbstractModel):
+    """
+    """
+    point = models.PointField(verbose_name=_("point"),srid=4326)
+
+    def __unicode__(self):
+        return 'Point for %s' % self.object
+
+class GeometryCollection(BaseAbstractModel):
+    """
+    """
+    geometry_collection = models.GeometryCollectionField(verbose_name=_("gemometry collection"),srid=4326)
+    class Meta:
+        verbose_name_plural = "Geometry collections"
+
+
+    def __unicode__(self):
+        return 'Geometry collection for %s' % self.object
