@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.gis import admin
+from django.conf import settings
 
 from geotagging.models import Point
 from geotagging.admin import PointAdmin
@@ -32,7 +33,8 @@ class PointForm(forms.ModelForm):
         exclude = ("content_type","object_id")
     class Media:
         js = ("http://openlayers.org/api/2.6/OpenLayers.js",
-              "http://openstreetmap.org/openlayers/OpenStreetMap.js")
+              "http://openstreetmap.org/openlayers/OpenStreetMap.js",
+              "http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=%s" %settings.GOOGLE_MAPS_API_KEY)
 
 class LineForm(forms.ModelForm):
     line = forms.CharField(widget=LineWidget())
@@ -41,7 +43,8 @@ class LineForm(forms.ModelForm):
         exclude = ("content_type","object_id")
     class Media:
         js = ("http://openlayers.org/api/2.6/OpenLayers.js",
-              "http://openstreetmap.org/openlayers/OpenStreetMap.js")
+              "http://openstreetmap.org/openlayers/OpenStreetMap.js",
+              "http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=%s" %settings.GOOGLE_MAPS_API_KEY)
 
 class PolygonForm(forms.ModelForm):
     polygon = forms.CharField(widget=PolygonWidget())
@@ -50,4 +53,5 @@ class PolygonForm(forms.ModelForm):
         exclude = ("content_type","object_id")
     class Media:
         js = ("http://openlayers.org/api/2.6/OpenLayers.js",
-              "http://openstreetmap.org/openlayers/OpenStreetMap.js")
+              "http://openstreetmap.org/openlayers/OpenStreetMap.js",
+              "http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=%s" %settings.GOOGLE_MAPS_API_KEY)
