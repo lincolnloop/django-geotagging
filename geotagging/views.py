@@ -18,7 +18,7 @@ def add_edit_point(request, content_type_id, object_id,
             new_object.save()
             return HttpResponseRedirect("/admin")
     form = form_class()
-    import ipdb; ipdb.set_trace()
+    #import ipdb; ipdb.set_trace()
 
     context = RequestContext(request, {
         'form': form,

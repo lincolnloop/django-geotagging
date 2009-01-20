@@ -23,6 +23,8 @@
 {% endblock %}
 
 {% block content %}
+<br />
+<br />
 <div id="content-main">
     {% block object-tools %}
       <ul class="object-tools">
@@ -32,8 +34,17 @@
       </ul>
     {% endblock %}
     <form action="." method="post">
-        {{ form.as_p}}
-        <input type="submit" value="Add">
+        <fieldset class="module aligned ">
+            <br />
+            <br />
+            <div class="form-row point  ">
+                {{ form.as_table}}
+            </div>
+
+        </fieldset>
+        <div class="submit-row" >
+            <input type="submit" value="Save" class="_save">
+        </div>
     </form>
 </div>
 {% endblock %}

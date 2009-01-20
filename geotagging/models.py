@@ -21,6 +21,13 @@ class BaseAbstractModel(models.Model):
     class Meta:
         abstract = True
 
+class Point(BaseAbstractModel):
+    """
+    """
+    point = models.PointField(verbose_name=_("point"),srid=4326)
+
+    def __unicode__(self):
+        return 'Point for %s' % self.object
 
 class MultiLine(BaseAbstractModel):
     """
@@ -35,7 +42,7 @@ class Line(BaseAbstractModel):
     """
 
     """
-    multi_line = models.LineStringField()
+    line = models.LineStringField()
 
     def __unicode__(self):
         return 'Line for %s' % self.object
@@ -48,15 +55,6 @@ class Polygon(BaseAbstractModel):
 
     def __unicode__(self):
         return 'polygon for %s' % self.object
-
-
-class Point(BaseAbstractModel):
-    """
-    """
-    point = models.PointField(verbose_name=_("point"),srid=4326)
-
-    def __unicode__(self):
-        return 'Point for %s' % self.object
 
 class GeometryCollection(BaseAbstractModel):
     """
