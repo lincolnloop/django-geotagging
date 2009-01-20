@@ -14,7 +14,7 @@ class BaseAbstractModel(models.Model):
     # Content-object field
     content_type   = models.ForeignKey(ContentType,
             related_name="content_type_set_for_%(class)s")
-    object_id      = models.CharField(_('object ID'),max_length=50)
+    object_id      = models.PositiveIntegerField(_('object ID'),max_length=50)
     object = generic.GenericForeignKey(ct_field="content_type", fk_field="object_id")
     objects = models.GeoManager()
 

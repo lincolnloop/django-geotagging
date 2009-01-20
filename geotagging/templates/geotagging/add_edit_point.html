@@ -28,10 +28,9 @@
 <div id="content-main">
     {% block object-tools %}
       <ul class="object-tools">
-        <li><a href="history/" class="historylink">{% trans "History" %}</a></li>
-        {% if has_absolute_url %}<li><a href="../../../r/{{ content_type_id }}/{{ object_id }}/" class="viewsitelink">{% trans "View on site" %}</a></li>{% endif%}
-        <li><a href="/geotagging/geo_point/{{ content_type_id }}/{{ object_id }}/" class="viewsitelink">{% trans "geo point it" %}</a></li>
+        <li><a href="/admin/{{ object_content_type.app_label }}/{{ object_content_type.model }}/{{ object.id }}" class="viewsitelink">Back to {{ object }}</a></li>
       </ul>
+      <h2>{{ object }}</h2>
     {% endblock %}
     <form action="." method="post">
         <fieldset class="module aligned ">
