@@ -5,15 +5,17 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 
 
-from geotagging.models import Point
+from geotagging.models import Point, Line, Polygon
 
-def add_edit_point(request, content_type_id, object_id,
-                  template=None, form_class=None):
+def add_edit_geotag(request, content_type_id, object_id,
+                  template=None, form_class=None,
+                  geotag_class=None):
     model_class = ContentType.objects.get(id=content_type_id).model_class()
     object = model_class.objects.get(id=object_id)
     object_content_type = ContentType.objects.get_for_model(object)
     try:
-        geotag = Point.objects.get(content_type__pk=object_content_type.id,
+        # TODO : Handle the case of Line and Polygon
+        geotag = geotag_class.objects.get(content_type__pk=object_content_type.id,
                                object_id=object.id)
     except ObjectDoesNotExist:
         geotag = None
@@ -28,7 +30,6 @@ def add_edit_point(request, content_type_id, object_id,
                                           object_content_type.model,
                                           object.id))
     form = form_class(instance=geotag)
-    #import ipdb; ipdb.set_trace()
 
     context = RequestContext(request, {
         'form': form,
