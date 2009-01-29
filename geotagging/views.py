@@ -4,6 +4,9 @@ from django.template import RequestContext
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.gis.shortcuts import render_to_kml
+from django.views.generic.simple import direct_to_template
+from django.core.urlresolvers import reverse
+from django.conf import settings
 
 
 
@@ -42,9 +45,24 @@ def add_edit_geotag(request, content_type_id, object_id,
     return render_to_response(template, context_instance=context )
 
 def kml_feed(request, template="geotagging/geotags.kml",
-             geotag_class=None):
+             geotag_class_name=None,content_type_name=None,
+             object_id=None):
+    geotag_class = ContentType.objects.get(name=geotag_class_name).model_class()
+    if content_type_name:
+        geotags = geotag_class.objects.filter(content_type__name=content_type_name)
+    if object_id:
+        geotags = geotags.filter(object_id=object_id)
+    if object_id == None and content_type_name == None :
+        geotags = geotag_class.objects.all()
     context = RequestContext(request, {
-        'geotags' : geotag_class.objects.all(),
+        'geotags' : geotags,
     })
     return render_to_kml(template,context_instance=context)
 
+def kml_feed_map(request,template="geotagging/view_kml_feed.html", geotag_class_name=None):
+    kml_feed = reverse("geotagging-kml_feed",kwargs={"geotag_class_name":geotag_class_name})
+    extra_context = {
+        "google_key" : settings.GOOGLE_MAPS_API_KEY,
+        "kml_feed" : kml_feed
+    }
+    return direct_to_template(request,template=template,extra_context=extra_context)
