@@ -59,8 +59,18 @@ def kml_feed(request, template="geotagging/geotags.kml",
     })
     return render_to_kml(template,context_instance=context)
 
-def kml_feed_map(request,template="geotagging/view_kml_feed.html", geotag_class_name=None):
-    kml_feed = reverse("geotagging-kml_feed",kwargs={"geotag_class_name":geotag_class_name})
+def kml_feed_map(request,template="geotagging/view_kml_feed.html",
+                 geotag_class_name=None, content_type_name=None):
+    if content_type_name:
+        kml_feed = reverse("geotagging-kml_feed_per_contenttype",
+                           kwargs={
+                            "geotag_class_name" : geotag_class_name,
+                            "content_type_name" : content_type_name,
+                            })
+    else:
+        kml_feed = reverse("geotagging-kml_feed",kwargs={"geotag_class_name":geotag_class_name})
+
+
     extra_context = {
         "google_key" : settings.GOOGLE_MAPS_API_KEY,
         "kml_feed" : kml_feed

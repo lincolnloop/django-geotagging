@@ -51,6 +51,8 @@ urlpatterns = patterns('',
     # KML feeds
     url(r'^kml_feed/(?P<geotag_class_name>[a-z]+)/$',kml_feed,
         name="geotagging-kml_feed"),
+    url(r'^kml_feed/(?P<geotag_class_name>[a-z]+)/(?P<content_type_name>[a-z]+)/$',kml_feed,
+        name="geotagging-kml_feed_per_contenttype"),
     # Feeds visualiser KML
 
     url(r'^kml_feed_map/all/$', direct_to_template,
@@ -66,4 +68,6 @@ urlpatterns = patterns('',
         }),
     url(r'^kml_feed_map/(?P<geotag_class_name>[a-z]+)/$', kml_feed_map,
         name="geotagging-kml_feed_map"),
+    url(r'^kml_feed_map/(?P<geotag_class_name>[a-z]+)/(?P<content_type_name>[a-z]+)/$', kml_feed_map,
+        name="geotagging-kml_feed_map_per_contenttype"),
 )
