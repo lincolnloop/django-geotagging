@@ -3,6 +3,8 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.gis.shortcuts import render_to_kml
+
 
 
 from geotagging.models import Point, Line, Polygon
@@ -38,3 +40,11 @@ def add_edit_geotag(request, content_type_id, object_id,
         'geotag' : geotag,
     })
     return render_to_response(template, context_instance=context )
+
+def kml_feed(request, template="geotagging/geotags.kml",
+             geotag_class=None):
+    context = RequestContext(request, {
+        'geotags' : geotag_class.objects.all(),
+    })
+    return render_to_kml(template,context_instance=context)
+
