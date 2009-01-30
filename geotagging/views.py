@@ -1,13 +1,14 @@
+from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.gis.measure import D
+from django.contrib.gis.shortcuts import render_to_kml
+from django.contrib.gis.utils import GeoIP
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.gis.shortcuts import render_to_kml
 from django.views.generic.simple import direct_to_template
-from django.core.urlresolvers import reverse
-from django.conf import settings
-
 
 
 from geotagging.models import Point, Line, Polygon
@@ -76,3 +77,32 @@ def kml_feed_map(request,template="geotagging/view_kml_feed.html",
         "kml_feed" : kml_feed
     }
     return direct_to_template(request,template=template,extra_context=extra_context)
+
+def neighborhood_monitoring(request,
+                          template="geotagging/view_neighborhood_monitoring.html",
+                          content_type_name=None, distance_lt_km=None):
+    if distance_lt_km == None:
+        distance_lt_km = 10
+    #geotag_class = ContentType.objects.get(name=geotag_class_name).model_class()
+    gip=GeoIP()
+    if not request.META["REMOTE_ADDR"]:
+        user_ip = request.META["REMOTE_ADDR"]
+    else:
+        user_ip = "populous.com"
+    user_location_pnt = gip.geos(user_ip)
+
+    criteria_pnt = {
+        "point__distance_lt" : (user_location_pnt,
+                                D(km=float(distance_lt_km))
+                                )
+            }
+    #geotag_points = Point.objects.filter(**criteria_pnt)
+    geotag_points = Point.objects.filter(**criteria_pnt).distance(user_location_pnt).order_by("-distance")
+    #import ipdb; ipdb.set_trace()
+    context = RequestContext(request, {
+        #'geotags' : geotags,
+        "geotag_points" : geotag_points,
+        "google_key" : settings.GOOGLE_MAPS_API_KEY,
+        "user_city" : gip.city(user_ip)
+    })
+    return render_to_response(template,context_instance=context)
