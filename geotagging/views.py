@@ -78,12 +78,9 @@ def kml_feed_map(request,template="geotagging/view_kml_feed.html",
     }
     return direct_to_template(request,template=template,extra_context=extra_context)
 
-def neighborhood_monitoring(request,
-                          template="geotagging/view_neighborhood_monitoring.html",
-                          content_type_name=None, distance_lt_km=None):
-    if distance_lt_km == None:
-        distance_lt_km = 10
-    #geotag_class = ContentType.objects.get(name=geotag_class_name).model_class()
+def kml_neighborhood_feed(request, template="geotagging/geotags.kml",
+             distance_lt_km=None ,content_type_name=None,
+             object_id=None):
     gip=GeoIP()
     if not request.META["REMOTE_ADDR"]:
         user_ip = request.META["REMOTE_ADDR"]
@@ -96,13 +93,42 @@ def neighborhood_monitoring(request,
                                 D(km=float(distance_lt_km))
                                 )
             }
-    #geotag_points = Point.objects.filter(**criteria_pnt)
-    geotag_points = Point.objects.filter(**criteria_pnt).distance(user_location_pnt).order_by("-distance")
-    #import ipdb; ipdb.set_trace()
+    if content_type_name:
+        criteria_pnt["content_type__name"]==content_type_name
+
+    geotags = Point.objects.filter(**criteria_pnt)
+
     context = RequestContext(request, {
-        #'geotags' : geotags,
+        'geotags' : geotags,
+
+    })
+    return render_to_kml(template,context_instance=context)
+
+def neighborhood_monitoring(request,
+                          template="geotagging/view_neighborhood_monitoring.html",
+                          content_type_name=None, distance_lt_km=None):
+    if distance_lt_km == None:
+        distance_lt_km = 10
+    gip=GeoIP()
+    if not request.META["REMOTE_ADDR"]:
+        user_ip = request.META["REMOTE_ADDR"]
+    else:
+        user_ip = "populous.com"
+    user_location_pnt = gip.geos(user_ip)
+
+    kml_feed = reverse("geotagging-kml_neighborhood_feed",
+                       kwargs={"distance_lt_km":distance_lt_km})
+    print "kml_feed : %s" %kml_feed
+    criteria_pnt = {
+        "point__distance_lt" : (user_location_pnt,
+                                D(km=float(distance_lt_km))
+                                )
+            }
+    geotag_points = Point.objects.filter(**criteria_pnt).distance(user_location_pnt).order_by("-distance")
+    context = RequestContext(request, {
         "geotag_points" : geotag_points,
         "google_key" : settings.GOOGLE_MAPS_API_KEY,
-        "user_city" : gip.city(user_ip)
+        "user_city" : gip.city(user_ip),
+        "kml_feed" : kml_feed,
     })
     return render_to_response(template,context_instance=context)

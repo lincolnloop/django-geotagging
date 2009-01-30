@@ -3,7 +3,7 @@ from django.views.generic.simple import direct_to_template
 from django.conf import settings
 
 from geotagging.views import add_edit_geotag,kml_feed, kml_feed_map
-from geotagging.views import neighborhood_monitoring
+from geotagging.views import neighborhood_monitoring, kml_neighborhood_feed
 from geotagging.models import Line, Point, Polygon
 from geotagging.forms import PointForm
 from geotagging.forms import LineForm
@@ -71,8 +71,11 @@ urlpatterns = patterns('',
         name="geotagging-kml_feed_map"),
     url(r'^kml_feed_map/(?P<geotag_class_name>[a-z]+)/(?P<content_type_name>[a-z]+)/$', kml_feed_map,
         name="geotagging-kml_feed_map_per_contenttype"),
-    
-    url(r'^neighborhood_monitoring/(?P<distance_lt_km>\d*)',
+
+    url(r'^neighborhood_monitoring/(?P<distance_lt_km>\d*)/$',
         neighborhood_monitoring,
-        name="geotagging-neighborhood_monitoring")
+        name="geotagging-neighborhood_monitoring"),
+    url(r'^kml_neighborhood_feed/(?P<distance_lt_km>\d*)/$',
+        kml_neighborhood_feed,
+        name="geotagging-kml_neighborhood_feed"),
 )
