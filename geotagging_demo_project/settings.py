@@ -78,6 +78,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'geotags',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -85,7 +86,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.gis',
     'geotagging_tests',
-    'geotags',
 )
 
 # Google maps api key
