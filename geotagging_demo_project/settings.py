@@ -1,4 +1,7 @@
+import os
 # Django settings for demo_project project.
+
+PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -9,13 +12,15 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = ''           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = ''             # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_NAME = 'geotagging_demo_db'             # Or path to database file if using sqlite3.
+DATABASE_USER = 'django_login'             # Not used with sqlite3.
+DATABASE_PASSWORD = 'django_password'         # Not used with sqlite3.
+DATABASE_HOST = '192.168.1.14'             # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_PORT = '5432'             # Set to empty string for default. Not used with sqlite3.
 
+TEST_RUNNER='django.contrib.gis.tests.run_tests'
+POSTGIS_SQL_PATH='/usr/share/postgresql-8.3-postgis/'
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -63,17 +68,34 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-ROOT_URLCONF = 'demo_project.urls'
+ROOT_URLCONF = 'geotagging_demo_project.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_PATH, 'templates'),
 )
 
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.gis',
+    'geotagging_tests',
+    'geotags',
 )
+
+# Google maps api key
+GOOGLE_MAPS_API_KEY = '<Your key shoudl go there>'
+
+# Path to the GeoIP datasets
+GEOIP_PATH = os.path.join(PROJECT_PATH, "geoip_datasets")
+
+# import local settings to override the defaults
+try:
+    from local_settings import *
+except ImportError, exp:
+    pass
