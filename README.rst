@@ -10,8 +10,8 @@ GeoDjango_
 Installation
 ============
 
-If you want to use test this application in its standalone project I would
-recommend the following approach :
+If you want to use this application  you can use the standalone project embded
+in the repository. I would recommend to follow these steps :
 * Create a virtual env : virtualenv geotagging_env
 * Move into that env :  cd geotagging_env
 * Activate the env : . bin/activate
