@@ -10,7 +10,6 @@ GeoDjango_
 To Do
 =====
 
-* Build out models for all the `geometry fields`_
 * Tests
 * Template tags
 

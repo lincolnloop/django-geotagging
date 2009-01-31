@@ -2,12 +2,12 @@ from django import forms
 from django.contrib.gis import admin
 from django.conf import settings
 
-from geotagging.models import Point
-from geotagging.admin import PointAdmin
-from geotagging.models import Line
-from geotagging.admin import LineAdmin
-from geotagging.models import Polygon
-from geotagging.admin import PolygonAdmin
+from geotags.models import Point
+from geotags.admin import PointAdmin
+from geotags.models import Line
+from geotags.admin import LineAdmin
+from geotags.models import Polygon
+from geotags.admin import PolygonAdmin
 
 # Getting an instance so we can generate the map widget; also
 # getting the geometry field for the model.

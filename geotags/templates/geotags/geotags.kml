@@ -2,7 +2,7 @@
 {% block placemarks %}{% for geotag in geotags %}
   <Placemark>
     <name>{{ geotag }}</name>
-    <description>{{ geotag }}</description>
+    <description>{{ geotag.content_type.name }}</description>
     {% if geotag.point %}
         {{ geotag.point.kml|safe }}
     {% endif %}

@@ -2,10 +2,10 @@ from django.contrib.gis import admin
 from django.contrib.gis.maps.google import GoogleMap
 from django.conf import settings
 
-from geotagging.models import Point, Line, Polygon
-from geotagging.models import Line,MultiLine
-from geotagging.models import Polygon
-from geotagging.models import GeometryCollection
+from geotags.models import Point, Line, Polygon
+from geotags.models import Line,MultiLine
+from geotags.models import Polygon
+from geotags.models import GeometryCollection
 
 GMAP = GoogleMap(key=settings.GOOGLE_MAPS_API_KEY)
 

@@ -1,6 +1,6 @@
 from django.contrib.gis import feeds
 
-from geotagging.models import Point, Line, Polygon
+from geotags.models import Point, Line, Polygon
 
 class GeorssPoint(feeds.Feed):
     link="/points/"

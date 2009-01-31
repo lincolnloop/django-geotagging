@@ -11,7 +11,7 @@ from django.template import RequestContext
 from django.views.generic.simple import direct_to_template
 
 
-from geotagging.models import Point, Line, Polygon
+from geotags.models import Point, Line, Polygon
 
 def add_edit_geotag(request, content_type_id, object_id,
                   template=None, form_class=None,
@@ -45,7 +45,7 @@ def add_edit_geotag(request, content_type_id, object_id,
     })
     return render_to_response(template, context_instance=context )
 
-def kml_feed(request, template="geotagging/geotags.kml",
+def kml_feed(request, template="geotags/geotags.kml",
              geotag_class_name=None,content_type_name=None,
              object_id=None):
     geotag_class = ContentType.objects.get(name=geotag_class_name).model_class()
@@ -60,16 +60,16 @@ def kml_feed(request, template="geotagging/geotags.kml",
     })
     return render_to_kml(template,context_instance=context)
 
-def kml_feed_map(request,template="geotagging/view_kml_feed.html",
+def kml_feed_map(request,template="geotags/view_kml_feed.html",
                  geotag_class_name=None, content_type_name=None):
     if content_type_name:
-        kml_feed = reverse("geotagging-kml_feed_per_contenttype",
+        kml_feed = reverse("geotags-kml_feed_per_contenttype",
                            kwargs={
                             "geotag_class_name" : geotag_class_name,
                             "content_type_name" : content_type_name,
                             })
     else:
-        kml_feed = reverse("geotagging-kml_feed",kwargs={"geotag_class_name":geotag_class_name})
+        kml_feed = reverse("geotags-kml_feed",kwargs={"geotag_class_name":geotag_class_name})
 
 
     extra_context = {
@@ -78,7 +78,7 @@ def kml_feed_map(request,template="geotagging/view_kml_feed.html",
     }
     return direct_to_template(request,template=template,extra_context=extra_context)
 
-def kml_neighborhood_feed(request, template="geotagging/geotags.kml",
+def kml_neighborhood_feed(request, template="geotags/geotags.kml",
              distance_lt_km=None ,content_type_name=None,
              object_id=None):
     gip=GeoIP()
@@ -105,7 +105,7 @@ def kml_neighborhood_feed(request, template="geotagging/geotags.kml",
     return render_to_kml(template,context_instance=context)
 
 def neighborhood_monitoring(request,
-                          template="geotagging/view_neighborhood_monitoring.html",
+                          template="geotags/view_neighborhood_monitoring.html",
                           content_type_name=None, distance_lt_km=None):
     if distance_lt_km == None:
         distance_lt_km = 10
@@ -116,7 +116,7 @@ def neighborhood_monitoring(request,
         user_ip = "populous.com"
     user_location_pnt = gip.geos(user_ip)
 
-    kml_feed = reverse("geotagging-kml_neighborhood_feed",
+    kml_feed = reverse("geotags-kml_neighborhood_feed",
                        kwargs={"distance_lt_km":distance_lt_km})
     print "kml_feed : %s" %kml_feed
     criteria_pnt = {
