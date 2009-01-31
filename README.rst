@@ -21,6 +21,7 @@ recommend the following approach :
 * Download the following geoip datasets from and copy them in `geotagging_demo_project/geoip_datasets/` :
      - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
      - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+* Install libgeoip : sudo aptitude install geoip-bin
 * Add google projection : http://geodjango.org/docs/install.html#add-google-projection-to-spatial-ref-sys-table
      - $ ./manage shell
      - >>> from django.contrib.gis.utils import add_postgis_srs

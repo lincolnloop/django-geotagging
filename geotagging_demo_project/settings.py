@@ -19,8 +19,9 @@ DATABASE_PASSWORD = 'django_password'         # Not used with sqlite3.
 DATABASE_HOST = '192.168.1.14'             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = '5432'             # Set to empty string for default. Not used with sqlite3.
 
-TEST_RUNNER='django.contrib.gis.tests.run_tests'
-POSTGIS_SQL_PATH='/usr/share/postgresql-8.3-postgis/'
+TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
+POSTGIS_SQL_PATH ='/usr/share/postgresql-8.3-postgis/'
+DATABASE_SUPPORTS_TRANSACTIONS = True
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
