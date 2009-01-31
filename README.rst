@@ -27,10 +27,18 @@ recommend the following approach :
      - >>> from django.contrib.gis.utils import add_postgis_srs
      - >>> add_postgis_srs(900913)
 
+Tests
+=====
+
+`geotags` reusable application can be tested by using the `geotagging_demo_project`.
+In order to do so you need go inside the project directory :
+  - $ cd geotagging_demo_project
+  - $ ./manage.py geotagging_tests
+
 To Do
 =====
 
-* Tests
+* Increase the test coverage
 * Template tags to make the usage of the maps easier.
 
 .. _`geometry fields`: http://geodjango.org/docs/model-api.html#geometry-field-types
