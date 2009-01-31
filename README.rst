@@ -26,6 +26,7 @@ recommend the following approach :
      - $ ./manage shell
      - >>> from django.contrib.gis.utils import add_postgis_srs
      - >>> add_postgis_srs(900913)
+* Overwrite the default GOOGLE_MAPS_API_KEY by setting it in a file called local_settings.py
 
 Tests
 =====
