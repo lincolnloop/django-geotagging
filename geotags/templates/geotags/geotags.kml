@@ -1,16 +1,8 @@
 {% extends "gis/kml/base.kml" %}
-{% block placemarks %}{% for geotag in geotags %}
+{% block placemarks %}{% for place in places %}
   <Placemark>
-    <name>{{ geotag }}</name>
-    <description>{{ geotag.content_type.name }}</description>
-    {% if geotag.point %}
-        {{ geotag.point.kml|safe }}
-    {% endif %}
-    {% if geotag.line %}
-        {{ geotag.line.kml|safe }}
-    {% endif %}
-    {% if geotag.polygon %}
-        {{ geotag.polygon.kml|safe }}
-    {% endif %}
+    <name>{{ place }}</name>
+    <description>{{ place.content_type.name }}</description>
+    {{ place.kml|safe }}
   </Placemark>{% endfor %}
 {% endblock %}

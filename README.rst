@@ -1,6 +1,6 @@
------------------------------------
-Generic GeoTagging app for Django
------------------------------------
+--------------------------
+GeoTagging app for Django
+--------------------------
 
 .. contents::
 
@@ -36,7 +36,7 @@ in the repository. I would recommend to follow these steps :
 * Activate the env ::
 
     . bin/activate
-    
+
 * Install pip ::
 
     easy_install pip

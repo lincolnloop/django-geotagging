@@ -56,7 +56,7 @@ def kml_feed(request, template="geotags/geotags.kml",
     if object_id == None and content_type_name == None :
         geotags = geotag_class.objects.all()
     context = RequestContext(request, {
-        'geotags' : geotags,
+        'places' : geotags.kml(),
     })
     return render_to_kml(template,context_instance=context)
 
@@ -77,6 +77,40 @@ def kml_feed_map(request,template="geotags/view_kml_feed.html",
         "kml_feed" : kml_feed
     }
     return direct_to_template(request,template=template,extra_context=extra_context)
+
+def kml_feeds_map(request,template="geotags/view_kml_feeds.html",
+                 content_type_name=None):
+    if content_type_name:
+        kml_feed_point = reverse("geotags-kml_feed_per_contenttype",
+                           kwargs={
+                            "geotag_class_name" : "point",
+                            "content_type_name" : content_type_name,
+                            })
+        kml_feed_line = reverse("geotags-kml_feed_per_contenttype",
+                           kwargs={
+                            "geotag_class_name" : "line",
+                            "content_type_name" : content_type_name,
+                            })
+        kml_feed_polygon = reverse("geotags-kml_feed_per_contenttype",
+                           kwargs={
+                            "geotag_class_name" : "polygon",
+                            "content_type_name" : content_type_name,
+                            })
+    else:
+        kml_feed_point = reverse("geotags-kml_feed",kwargs={"geotag_class_name": "point"})
+        kml_feed_line = reverse("geotags-kml_feed",kwargs={"geotag_class_name": "line"})
+        kml_feed_polygon = reverse("geotags-kml_feed",kwargs={"geotag_class_name": "polygon"})
+
+
+    extra_context = {
+        "google_key" : settings.GOOGLE_MAPS_API_KEY,
+        "kml_feed_point" : kml_feed_point,
+        "kml_feed_line" : kml_feed_line,
+        "kml_feed_polygon" : kml_feed_polygon
+    }
+    return direct_to_template(request,template=template,extra_context=extra_context)
+
+
 
 def kml_neighborhood_feed(request, template="geotags/geotags.kml",
              distance_lt_km=None ,content_type_name=None,
