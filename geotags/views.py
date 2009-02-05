@@ -152,7 +152,6 @@ def neighborhood_monitoring(request,
 
     kml_feed = reverse("geotags-kml_neighborhood_feed",
                        kwargs={"distance_lt_km":distance_lt_km})
-    print "kml_feed : %s" %kml_feed
     criteria_pnt = {
         "point__distance_lt" : (user_location_pnt,
                                 D(km=float(distance_lt_km))
@@ -160,6 +159,7 @@ def neighborhood_monitoring(request,
             }
     geotag_points = Point.objects.filter(**criteria_pnt).distance(user_location_pnt).order_by("-distance")
     context = RequestContext(request, {
+        "user_location_pnt" : user_location_pnt,
         "geotag_points" : geotag_points,
         "google_key" : settings.GOOGLE_MAPS_API_KEY,
         "user_city" : gip.city(user_ip),
