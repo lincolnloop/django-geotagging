@@ -8,7 +8,6 @@ from geotags.models import Line, Point, Polygon
 from geotags.forms import PointForm
 from geotags.forms import LineForm
 from geotags.forms import PolygonForm
-from geotags.feeds import feed_dict
 
 urlpatterns = patterns('',
     url(r'^geo_point/(?P<content_type_id>\d*)/(?P<object_id>\d*)/$',add_edit_geotag,
