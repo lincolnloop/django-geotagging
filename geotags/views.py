@@ -116,7 +116,7 @@ def kml_neighborhood_feed(request, template="geotags/geotags.kml",
              distance_lt_km=None ,content_type_name=None,
              object_id=None):
     gip=GeoIP()
-    if not request.META["REMOTE_ADDR"]:
+    if request.META["REMOTE_ADDR"] != "127.0.0.1":
         user_ip = request.META["REMOTE_ADDR"]
     else:
         user_ip = "populous.com"
@@ -133,7 +133,7 @@ def kml_neighborhood_feed(request, template="geotags/geotags.kml",
     geotags = Point.objects.filter(**criteria_pnt)
 
     context = RequestContext(request, {
-        'geotags' : geotags,
+        'places' : geotags.kml(),
 
     })
     return render_to_kml(template,context_instance=context)
