@@ -77,7 +77,7 @@ class TestKmlFeedUrls(TestCase):
                                            })
                                   )
         self.assertEqual(response.status_code,200)
-        self.assertEqual(response.context[0]["geotags"].count(), 3)
+        self.assertEqual(response.context[0]["places"].count(), 3)
 
 class TestGeotagsUrls(TestCase):
     def setUp(self):

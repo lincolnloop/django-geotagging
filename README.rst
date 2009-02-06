@@ -49,7 +49,10 @@ in the repository. I would recommend to follow these steps :
 
     createdb -T template_postgis -U django_login geotagging_demo_db
 
-* Download the following geoip datasets (City_, Country_) from and copy them in `geotagging_demo_project/geoip_datasets/`
+* Download the following geoip datasets (City_, Country_) and copy them in `geotagging_demo_project/geoip_datasets/`. This can be done using this script::
+
+    ./get_geoip_datasets.sh
+
 * Install libgeoip ::
 
     sudo aptitude install geoip-bin
@@ -60,6 +63,7 @@ in the repository. I would recommend to follow these steps :
     >>> from django.contrib.gis.utils import add_postgis_srs
     >>> add_postgis_srs(900913)
 * Overwrite the default GOOGLE_MAPS_API_KEY by setting it in a file called local_settings.py
+
 
 .. _City: http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
 .. _Country: http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
