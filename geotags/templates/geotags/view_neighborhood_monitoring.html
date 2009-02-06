@@ -104,8 +104,12 @@
   </head>
   <body onload="init()">
     <h1 id="title">Neighborhood monitoring</h1>
-    user location : {{ user_location_pnt }}
-    user city : {{ user_city }}
+    <h2>User details</h2>
+    <ul>
+      <li><em>user IP :</em> {{ user_ip }}</li>
+      <li><em>user location :</em> {{ user_location_pnt }}</li>
+      <li><em>user city :</em> {{ user_city|pprint }}</li>
+    </ul>
     <h2>Points</h2>
     <ul>
         {%  for point in geotag_points %}

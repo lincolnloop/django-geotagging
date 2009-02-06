@@ -144,7 +144,7 @@ def neighborhood_monitoring(request,
     if distance_lt_km == None:
         distance_lt_km = 10
     gip=GeoIP()
-    if not request.META["REMOTE_ADDR"]:
+    if request.META["REMOTE_ADDR"] != "127.0.0.1":
         user_ip = request.META["REMOTE_ADDR"]
     else:
         user_ip = "populous.com"
@@ -159,6 +159,7 @@ def neighborhood_monitoring(request,
             }
     geotag_points = Point.objects.filter(**criteria_pnt).distance(user_location_pnt).order_by("-distance")
     context = RequestContext(request, {
+        "user_ip" : user_ip,
         "user_location_pnt" : user_location_pnt,
         "geotag_points" : geotag_points,
         "google_key" : settings.GOOGLE_MAPS_API_KEY,
