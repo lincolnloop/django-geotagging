@@ -3,6 +3,7 @@
   <Placemark>
     <name>{{ place }}</name>
     <description>{{ place.content_type.name }}</description>
+    <url>{{ place.object.get_absolute_url }}</url>
     {{ place.kml|safe }}
   </Placemark>{% endfor %}
 {% endblock %}

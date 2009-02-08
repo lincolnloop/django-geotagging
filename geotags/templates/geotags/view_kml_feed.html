@@ -76,7 +76,7 @@
             popup = new OpenLayers.Popup.FramedCloud("chicken",
                                      feature.geometry.getBounds().getCenterLonLat(),
                                      new OpenLayers.Size(100,100),
-                                     "<h2>"+feature.attributes.name + "</h2>" + feature.attributes.description,
+                                     "<h2>"+feature.attributes.name + "</h2>" + feature.attributes.description + " -- " + "<a href='" + feature.attributes.url +"'>read more</a>",
                                      null, true, onPopupClose);
             feature.popup = popup;
             map.addPopup(popup);
