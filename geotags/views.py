@@ -40,6 +40,7 @@ def add_edit_geotag(request, content_type_id, object_id,
     context = RequestContext(request, {
         'form': form,
         'object' : object,
+        "google_key" : settings.GOOGLE_MAPS_API_KEY,
         'object_content_type' : object_content_type,
         'geotag' : geotag,
     })

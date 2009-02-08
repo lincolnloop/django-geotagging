@@ -32,6 +32,11 @@
       </ul>
       <h2>{{ object }}</h2>
     {% endblock %}
+
+     <input type="text" id="id_address">
+     <input type="submit" value="center the map" onclick="move_to_geocode();">
+
+
     <form action="." method="post">
         <fieldset class="module aligned ">
             <br />
@@ -46,4 +51,28 @@
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+     function move_to_geocode(){
+         address = jQuery("#id_address")[0].value;
+         gkey = "{{ google_key }}";
+         google_geocoder_query = "http://maps.google.com/maps/geo?q="+address+"&output=json&oe=utf8&sensor=true_or_false&key=" + gkey + "&callback=?";
+         jQuery.getJSON(google_geocoder_query,
+                        function(data){
+                         lon = data["Placemark"][0]["Point"]["coordinates"][0];
+                         lat = data["Placemark"][0]["Point"]["coordinates"][1];
+                         zoom_lvl = 15;
+                         console.log(" lon : " + lon +"lat : "+ lat);
+                         geocoder_projection = new OpenLayers.Projection("EPSG:4326")
+                         lonlat = new OpenLayers.LonLat(lon, lat);
+                         lonlat.transform(geocoder_projection,geodjango_point.map.getProjectionObject());
+                         geodjango_point.map.setCenter(lonlat, zoom_lvl);
+                        })
+
+
+
+
+     }
+
+</script>
 {% endblock %}
