@@ -26,7 +26,7 @@ urlpatterns = patterns('',
     # KML feeds
     url(r'^kml_feed/(?P<geotag_class_name>[a-z]+)/$',kml_feed,
         name="geotags-kml_feed"),
-    url(r'^kml_feed/(?P<geotag_class_name>[a-z]+)/(?P<content_type_name>[a-z]+)/$',kml_feed,
+    url(r'^kml_feed/(?P<geotag_class_name>[a-z]+)/(?P<content_type_name>[a-z ]+)/$',kml_feed,
         name="geotags-kml_feed_per_contenttype"),
 
     # KML Feeds visualiser
@@ -37,7 +37,7 @@ urlpatterns = patterns('',
 
     url(r'^kml_feed_map/(?P<geotag_class_name>[a-z]+)/$', kml_feed_map,
         name="geotags-kml_feed_map"),
-    url(r'^kml_feed_map/(?P<geotag_class_name>[a-z]+)/(?P<content_type_name>[a-z]+)/$', kml_feed_map,
+    url(r'^kml_feed_map/(?P<geotag_class_name>[a-z]+)/(?P<content_type_name>[a-z ]+)/$', kml_feed_map,
         name="geotags-kml_feed_map_per_contenttype"),
 
     # neighborhood monitoring
