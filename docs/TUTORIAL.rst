@@ -12,12 +12,11 @@ example. The installation of this project is explained in the documentation
 Geotag contents
 ---------------
 
-`geotags` come with and handy customization of admin site, it allows you to
+`geotags` comes with an handy customization of the django `admin site`, it allows you to
 add edit your geotags directly with in the admin interface.
 
 When you edit any object with in the django database you will see 3 buttons in
-the top right corner. They allow you to associate a Point, a Line, a Polygon to
-this object:
+the top right corner. They allow you to associate a Point, a Line, a Polygon to it:
 
 .. image:: _images/geotags_buttons.png
 
@@ -28,7 +27,8 @@ this object:
 Point
 =====
 
-You will find below a screen shot of the interface to add or edit a point :
+You will find below a screen shot of the interface to add or edit a point. The
+intarface for adding a line or a polygon is very similar :
 
 .. image:: _images/add_point.png
 
@@ -42,7 +42,7 @@ django objects::
 * maps
 * kml feeds
 
-You have 2 types of URL patterns to select what you want to see :
+You have 3 types of URL patterns to select what you want to see :
 
 points, lines and polygons
   URL : http://127.0.0.1:8000/geotagging/kml_feeds_map/all/
@@ -62,12 +62,15 @@ points or lines or polygons for a particular content type
 
 Neighborhood monitoring
 -----------------------
-`geotags` come also with the capability to presents to your user the objects
+`geotags` comes also with the capability to present to your user the objects
 that have been geotags in their neighborhood.
 
 * URL : http://127.0.0.1:8000/geotagging/neighborhood_monitoring/10/
 
-The last bit in the url, the integer, represents the radius in km around you
-you are interested in.
+The last bit in the url, the integer, represents the radius in km around him.
+The user location is determined using geoip from maxmind_. It is based on the
+user's IP address.
 
 .. image:: _images/neighborhood_monitoring.png
+
+.. _maxmind: http://www.maxmind.com/
