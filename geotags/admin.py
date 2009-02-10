@@ -50,5 +50,5 @@ class PolygonAdmin(admin.OSMGeoAdmin,LinkToObjectMixin):
 admin.site.register(Point, PointAdmin)
 admin.site.register(Line, LineAdmin)
 admin.site.register(Polygon, PolygonAdmin)
-admin.site.register(MultiLine, admin.GeoModelAdmin)
-admin.site.register(GeometryCollection, admin.GeoModelAdmin)
+#admin.site.register(MultiLine, admin.GeoModelAdmin)
+#admin.site.register(GeometryCollection, admin.GeoModelAdmin)
