@@ -56,7 +56,7 @@
      function move_to_geocode(){
          address = jQuery("#id_address")[0].value;
          gkey = "{{ google_key }}";
-         google_geocoder_query = "http://maps.google.com/maps/geo?q="+address+"&output=json&oe=utf8&sensor=true_or_false&key=" + gkey + "&callback=?";
+         google_geocoder_query = "http://maps.google.com/maps/geo?q="+address+"&output=json&oe=utf8&sensor=false&key=" + gkey + "&callback=?";
          jQuery.getJSON(google_geocoder_query,
                         function(data){
                          lon = data["Placemark"][0]["Point"]["coordinates"][0];
