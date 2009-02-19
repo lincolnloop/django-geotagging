@@ -16,6 +16,12 @@ from geotags.models import Point, Line, Polygon
 def add_edit_geotag(request, content_type_id, object_id,
                   template=None, form_class=None,
                   geotag_class=None):
+    """
+    Add a geotag for the current object if it doesn't exist else it update it.
+    Geotag can be a point, a line, a polygon this is specified by the
+    geotag_class.
+
+    """
     model_class = ContentType.objects.get(id=content_type_id).model_class()
     object = model_class.objects.get(id=object_id)
     object_content_type = ContentType.objects.get_for_model(object)
@@ -49,6 +55,10 @@ def add_edit_geotag(request, content_type_id, object_id,
 def kml_feed(request, template="geotags/geotags.kml",
              geotag_class_name=None,content_type_name=None,
              object_id=None):
+    """
+    Return a KML feed of a particular geotag type : point, line, polygon
+    This feed can be restricted by content_type and object_id.
+    """
     geotag_class = ContentType.objects.get(name=geotag_class_name).model_class()
     if content_type_name:
         geotags = geotag_class.objects.filter(content_type__name=content_type_name)
@@ -63,6 +73,10 @@ def kml_feed(request, template="geotags/geotags.kml",
 
 def kml_feed_map(request,template="geotags/view_kml_feed.html",
                  geotag_class_name=None, content_type_name=None):
+    """
+    Direct the user to a template with all the required parameters to render
+    the KML feed on a google map.
+    """
     if content_type_name:
         kml_feed = reverse("geotags-kml_feed_per_contenttype",
                            kwargs={
@@ -81,6 +95,10 @@ def kml_feed_map(request,template="geotags/view_kml_feed.html",
 
 def kml_feeds_map(request,template="geotags/view_kml_feeds.html",
                  content_type_name=None):
+    """
+    Direct the user to a template with all the required parameters to render
+    the KML feeds (point, line, polygon) on a google map.
+    """
     if content_type_name:
         kml_feed_point = reverse("geotags-kml_feed_per_contenttype",
                            kwargs={
@@ -116,6 +134,12 @@ def kml_feeds_map(request,template="geotags/view_kml_feeds.html",
 def kml_neighborhood_feed(request, template="geotags/geotags.kml",
              distance_lt_km=None ,content_type_name=None,
              object_id=None):
+    """
+    Return a KML feed of all the geotags in a around the user. This view takes
+    an argument called `distance_lt_km` which is the radius of the permeter your
+    are searching in. This feed can be restricted based on the content type of
+    the element you want to get.
+    """
     gip=GeoIP()
     if request.META["REMOTE_ADDR"] != "127.0.0.1":
         user_ip = request.META["REMOTE_ADDR"]
@@ -142,6 +166,11 @@ def kml_neighborhood_feed(request, template="geotags/geotags.kml",
 def neighborhood_monitoring(request,
                           template="geotags/view_neighborhood_monitoring.html",
                           content_type_name=None, distance_lt_km=None):
+    """
+    Direct the user to a template that is able to render the `kml_neighborhood_feed`
+    on a google map. This feed can be restricted based on the content type of
+    the element you want to get.
+    """
     if distance_lt_km == None:
         distance_lt_km = 10
     gip=GeoIP()

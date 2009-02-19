@@ -1,8 +1,8 @@
 Installation
 ============
 
-This documentation explains how to setup geotags with the demo project that come
-with its. If you are interested to use geotags directly in you own project I
+This documentation explains how to setup geotags with the demo project that comes
+with it. If you are interested to use geotags directly in you own project I
 would recommend to read also this documentation :
 
 * Create a virtual env ::

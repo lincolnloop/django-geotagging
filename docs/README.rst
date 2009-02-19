@@ -36,12 +36,19 @@ geotagging_tests
   This is a django app that contains all the tests of geotags and also a
   `DummyModel` that you could use to experiment with geotags.
 
+Installation
+=============
 
+In order to use django-geotagging, you will need to have a
+functioning installation of Django 1.0 or newer and then follow
+the instruction given in the file called `INSTALL.rst`.
 
 Usage
 =====
 
-You can use this reusable application in at least 2 ways. You can start with project embed  in the repository and extend it with other django apps or you can put geotags inside your PYTHONPATH and add it into the INSTALLED_APP.
+You can use this reusable application in at least 2 ways. You can start with
+project embed  in the repository and extend it with other django apps or you
+can put geotags inside your PYTHONPATH and add it into the INSTALLED_APP.
 `INSTALL.rst`, inside the `docs` directory, explains how to install this app.
 `TUTORIAL.rst` shows the capability of this reusable app. django-geotagging allows you to :
 
