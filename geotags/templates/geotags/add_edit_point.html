@@ -54,6 +54,7 @@
 
 <script type="text/javascript">
      function move_to_geocode(){
+         geodjango_func = eval('geodjango_' + jQuery('span[id$=_admin_map]').attr('id').split('_')[1])
          address = jQuery("#id_address")[0].value;
          gkey = "{{ google_key }}";
          google_geocoder_query = "http://maps.google.com/maps/geo?q="+address+"&output=json&oe=utf8&sensor=false&key=" + gkey + "&callback=?";
@@ -65,11 +66,9 @@
                          console.log(" lon : " + lon +"lat : "+ lat);
                          geocoder_projection = new OpenLayers.Projection("EPSG:4326")
                          lonlat = new OpenLayers.LonLat(lon, lat);
-                         lonlat.transform(geocoder_projection,geodjango_point.map.getProjectionObject());
-                         geodjango_point.map.setCenter(lonlat, zoom_lvl);
+                         lonlat.transform(geocoder_projection,geodjango_func.map.getProjectionObject());
+                         geodjango_func.map.setCenter(lonlat, zoom_lvl);
                         })
-
-
 
 
      }
