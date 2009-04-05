@@ -59,7 +59,7 @@ class Polygon(BaseAbstractModel):
 class GeometryCollection(BaseAbstractModel):
     """
     """
-    geometry_collection = models.GeometryCollectionField(verbose_name=_("gemometry collection"),srid=4326)
+    geometry_collection = models.GeometryCollectionField(verbose_name=_("geometry collection"),srid=4326)
     class Meta:
         verbose_name_plural = "Geometry collections"
 

@@ -11,12 +11,12 @@ GMAP = GoogleMap(key=settings.GOOGLE_MAPS_API_KEY)
 
 class LinkToObjectMixin(object):
     """
-    This Mixin add a column with a link to the object associated with the geom
+    Adds a column with a link to the object associated with the geom
     (point, line, polygon)
     """
     def link_to_object(self,obj):
         """
-        Add a link to the related object
+        Links to the related object
         """
         item = obj.object
         return u'<a href="../../%s/%s/%s/" title="Access in admin">%s</a>' % (\
