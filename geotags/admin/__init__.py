@@ -1,3 +1,6 @@
+from geotags.admin.options import GeotagsInline
+
+#admin.py
 from django.contrib.gis import admin
 from django.contrib.gis.maps.google import GoogleMap
 from django.conf import settings

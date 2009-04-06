@@ -1,0 +1,30 @@
+{% load i18n %}
+<fieldset class="module aligned collapse">
+  <h2>{% trans "Geotag" %}</h2>
+{{ inline_admin_formset.formset.management_form }}
+{{ inline_admin_formset.formset.non_form_errors }}
+
+{% for inline_admin_form in inline_admin_formset %}
+<div class="inline-related{% if forloop.last %} last-related{% endif %}">
+    {% if inline_admin_formset.formset.can_delete and inline_admin_form.original %}
+  <h3>
+        <span class="delete">{{ inline_admin_form.deletion_field.field }} {{ inline_admin_form.deletion_field.label_tag }}</span>{% endif %}
+  </h3>
+  {% if inline_admin_form.show_url %}
+  <p><a href="../../../r/{{ inline_admin_form.original.content_type_id }}/{{ inline_admin_form.original.id }}/">{% trans "View on site" %}</a></p>
+  {% endif %}
+  <p class="help">{% trans "Mark object on the map as either a point, path, or polygon." %}</p>
+  {% if inline_admin_form.form.non_field_errors %}{{ inline_admin_form.form.non_field_errors }}{% endif %}
+
+  {% for fieldset in inline_admin_form %}
+    {% include "admin/includes/fieldset.html" %}
+  {% endfor %}
+  {{ inline_admin_form.pk_field.field }}
+  {{ inline_admin_form.fk_field.field }}
+</div>
+{% endfor %}
+
+{# <ul class="tools"> #}
+{#   <li><a class="add" href="">Add another {{ inline_admin_formset.opts.verbose_name|title }}</a></li> #}
+{# </ul> #}
+</fieldset>

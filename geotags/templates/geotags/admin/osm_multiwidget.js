@@ -4,10 +4,11 @@
 // Add geometry specific panel of toolbar controls
 {{ module }}.getControls({{ module }}.layers.vector);
 
-//adds extra widgets
+//adds extra controls
+var lyr = {{ module }}.layers.vector;
 var path_ctl = new OpenLayers.Control.DrawFeature(lyr, OpenLayers.Handler.Path, {'displayClass': 'olControlDrawFeaturePath', 'title':'Draw a path'});
 var poly_ctl = new OpenLayers.Control.DrawFeature(lyr, OpenLayers.Handler.Polygon, {'displayClass': 'olControlDrawFeaturePolygon', 'title':'Draw a polygon'});
-{{ module }}.panel.controls.splice(1, 0, path_ctl, poly_ctl);
+{{ module }}.controls.splice(2, 0, path_ctl, poly_ctl);
 
 
 {{ module }}.panel.addControls({{ module }}.controls);
@@ -19,4 +20,4 @@ var poly_ctl = new OpenLayers.Control.DrawFeature(lyr, OpenLayers.Handler.Polygo
 {% if layerswitcher %}{{ module }}.map.addControl(new OpenLayers.Control.LayerSwitcher());{% endif %}
 // Then add optional behavior controls
 {% if not scrollable %}{{ module }}.map.getControlsByClass('OpenLayers.Control.Navigation')[0].disableZoomWheel();{% endif %}
-{% endblock; %}
+{% endblock %}
