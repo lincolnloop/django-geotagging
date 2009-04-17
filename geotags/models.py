@@ -7,8 +7,7 @@ from django.conf import settings
 
 class Geotag(models.Model):
     """
-    An abstract base class that any custom generic geo models probably should
-    subclass.
+    A simple wrapper around the GeoDjango field types
     """
 
     # Content-object field

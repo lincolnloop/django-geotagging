@@ -4,12 +4,12 @@ from django.conf import settings
 
 from geotags.views import add_edit_geotag,kml_feed, kml_feed_map, kml_feeds_map
 from geotags.views import neighborhood_monitoring, kml_neighborhood_feed
-from geotags.models import Line, Point, Polygon
+"""
+UNDER CONSTRUCTION...
 from geotags.forms import PointForm
 from geotags.forms import LineForm
 from geotags.forms import PolygonForm
 
-urlpatterns = patterns('',
     url(r'^geo_point/(?P<content_type_id>\d*)/(?P<object_id>\d*)/$',add_edit_geotag,
         {"form_class":PointForm, "geotag_class":Point,
          "template":"geotags/add_edit_point.html"}
@@ -22,11 +22,13 @@ urlpatterns = patterns('',
         {"form_class":PolygonForm,"geotag_class":Polygon,
          "template":"geotags/add_edit_point.html"}
         , name="geotags-add_edit_polygon"),
+"""
+urlpatterns = patterns('',
 
     # KML feeds
-    url(r'^kml_feed/(?P<geotag_class_name>[a-z]+)/$',kml_feed,
+    url(r'^kml_feed/(?P<geotag_field_name>point|line|polygon)/$',kml_feed,
         name="geotags-kml_feed"),
-    url(r'^kml_feed/(?P<geotag_class_name>[a-z]+)/(?P<content_type_name>[a-z ]+)/$',kml_feed,
+    url(r'^kml_feed/(?P<geotag_field_name>point|line|polygon)/(?P<content_type_name>[a-z ]+)/$',kml_feed,
         name="geotags-kml_feed_per_contenttype"),
 
     # KML Feeds visualiser

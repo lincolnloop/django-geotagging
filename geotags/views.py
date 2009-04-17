@@ -10,7 +10,7 @@ from django.template import RequestContext
 from django.views.generic.simple import direct_to_template
 
 
-from geotags.models import Point, Line, Polygon
+from geotags.models import Geotag
 
 def add_edit_geotag(request, content_type_id, object_id,
                   template=None, form_class=None,
@@ -52,19 +52,19 @@ def add_edit_geotag(request, content_type_id, object_id,
     return render_to_response(template, context_instance=context )
 
 def kml_feed(request, template="geotags/geotags.kml",
-             geotag_class_name=None,content_type_name=None,
+             geotag_field_name=None, content_type_name=None,
              object_id=None):
     """
     Return a KML feed of a particular geotag type : point, line, polygon
     This feed can be restricted by content_type and object_id.
     """
-    geotag_class = ContentType.objects.get(name=geotag_class_name).model_class()
+    if geotag_field_name:
+        kw = str('%s__isnull' % geotag_field_name)
+        geotags = Geotag.objects.filter(**{kw:False})
     if content_type_name:
-        geotags = geotag_class.objects.filter(content_type__name=content_type_name)
+        geotags = geotags.objects.filter(content_type__name=content_type_name)
     if object_id:
         geotags = geotags.filter(object_id=object_id)
-    if object_id == None and content_type_name == None :
-        geotags = geotag_class.objects.all()
     context = RequestContext(request, {
         'places' : geotags.kml(),
     })
