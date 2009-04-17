@@ -5,10 +5,7 @@ from django.contrib.gis import admin
 from django.contrib.gis.maps.google import GoogleMap
 from django.conf import settings
 
-from geotags.models import Point, Line, Polygon
-from geotags.models import Line,MultiLine
-from geotags.models import Polygon
-from geotags.models import GeometryCollection
+from geotags.models import Geotag
 
 GMAP = GoogleMap(key=settings.GOOGLE_MAPS_API_KEY)
 
@@ -30,7 +27,7 @@ class LinkToObjectMixin(object):
     link_to_object.short_description = u'Object'
     link_to_object.allow_tags = True
 
-
+"""
 class PointAdmin(admin.OSMGeoAdmin,LinkToObjectMixin):
     extra_js = [GMAP.api_url + GMAP.key]
     map_template = 'gis/admin/google.html'
@@ -55,3 +52,4 @@ admin.site.register(Line, LineAdmin)
 admin.site.register(Polygon, PolygonAdmin)
 #admin.site.register(MultiLine, admin.GeoModelAdmin)
 #admin.site.register(GeometryCollection, admin.GeoModelAdmin)
+"""

@@ -1,7 +1,11 @@
 {# Author: Justin Bronn, Travis Pinney & Dane Springmeyer #}
 {% block vars %}
 var catchallId = '{{ id }}'.replace(/point$/, 'catchall');
-//document.getElementById(catchallId).parentNode.style['display'] = "none";
+document.getElementById(catchallId).parentNode.parentNode.style['display'] = "none";
+var lineId = '{{ id }}'.replace(/point$/, 'line');
+document.getElementById(lineId).parentNode.parentNode.style['display'] = "none";
+var polygonId = '{{ id }}'.replace(/point$/, 'polygon');
+document.getElementById(polygonId).parentNode.parentNode.style['display'] = "none";
 
 var {{ module }} = {};
 {{ module }}.map = null; {{ module }}.controls = null; {{ module }}.panel = null; {{ module }}.re = new RegExp("^SRID=\d+;(.+)", "i"); {{ module }}.layers = {}; 
