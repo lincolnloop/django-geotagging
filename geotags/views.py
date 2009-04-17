@@ -2,7 +2,6 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis.measure import D
 from django.contrib.gis.shortcuts import render_to_kml
-from django.contrib.gis.utils import GeoIP
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -140,6 +139,7 @@ def kml_neighborhood_feed(request, template="geotags/geotags.kml",
     are searching in. This feed can be restricted based on the content type of
     the element you want to get.
     """
+    from django.contrib.gis.utils import GeoIP
     gip=GeoIP()
     if request.META["REMOTE_ADDR"] != "127.0.0.1":
         user_ip = request.META["REMOTE_ADDR"]
