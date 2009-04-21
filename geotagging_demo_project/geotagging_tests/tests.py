@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis.utils import add_postgis_srs
 
-from geotags.models import Point,Line,Polygon
+from geotags.models import Geotag
 from geotagging_tests.models import DummyModel
 
 class PointTest(TestCase):
@@ -19,7 +19,7 @@ class PointTest(TestCase):
         """
         Tests that a point can be created.
         """
-        point = Point(object=self.dummy_obj,
+        point = Geotag(object=self.dummy_obj,
                     point='SRID=4326;POINT (17.6 10.1)' )
         point.save()
         self.assertEqual(point.object.name, "foo")
@@ -33,7 +33,7 @@ class LineTest(TestCase):
         """
         Tests that a line can be created.
         """
-        line = Line(object=self.dummy_obj,
+        line = Geotag(object=self.dummy_obj,
                     line='SRID=4326;LINESTRING (6.41 9.53, 13.79 9.27)' )
         line.save()
         self.assertEqual(line.object.name, "foo")
@@ -47,7 +47,7 @@ class PolygonTest(TestCase):
         """
         Tests that a polygon can be created.
         """
-        polygon = Polygon(object=self.dummy_obj,
+        polygon = Geotag(object=self.dummy_obj,
                     polygon='SRID=4326;POLYGON ((10.10 10.74, 15.90 8.92, 8.70 3.60, -0.52 8.58, 4.57 12.12, 10.10 10.74))')
         polygon.save()
         self.assertEqual(polygon.object.name, "foo")
@@ -57,23 +57,23 @@ class TestKmlFeedUrls(TestCase):
     def setUp(self):
         self.dummy_foo = DummyModel(name="foo")
         self.dummy_foo.save()
-        self.point_foo = Point(object=self.dummy_foo,
+        self.point_foo = Geotag(object=self.dummy_foo,
                       point='SRID=4326;POINT (17.6 10.1)')
         self.point_foo.save()
         self.dummy_bar = DummyModel(name="bar")
         self.dummy_bar.save()
-        self.point_bar = Point(object=self.dummy_bar,
+        self.point_bar = Geotag(object=self.dummy_bar,
                       point='SRID=4326;POINT (17.6 10.1)')
         self.point_bar.save()
         self.dummy_baz = DummyModel(name="baz")
         self.dummy_baz.save()
-        self.point_baz = Point(object=self.dummy_baz,
+        self.point_baz = Geotag(object=self.dummy_baz,
                       point='SRID=4326;POINT (17.6 10.1)')
         self.point_baz.save()
     def test_kml_feed_view(self):
         response = self.client.get(reverse("geotags-kml_feed",
                                            kwargs={
-                                            "geotag_class_name" : "point",
+                                            "geotag_field_name" : "point",
                                            })
                                   )
         self.assertEqual(response.status_code,200)
