@@ -71,7 +71,7 @@ def kml_feed(request, template="geotags/geotags.kml",
     return render_to_kml(template,context_instance=context)
 
 def kml_feed_map(request,template="geotags/view_kml_feed.html",
-                 geotag_class_name=None, content_type_name=None):
+                 geotag_field_name=None, content_type_name=None):
     """
     Direct the user to a template with all the required parameters to render
     the KML feed on a google map.
@@ -79,7 +79,7 @@ def kml_feed_map(request,template="geotags/view_kml_feed.html",
     if content_type_name:
         kml_feed = reverse("geotags-kml_feed_per_contenttype",
                            kwargs={
-                            "geotag_class_name" : geotag_class_name,
+                            "geotag_field_name" : geotag_class_name,
                             "content_type_name" : content_type_name,
                             })
     else:
