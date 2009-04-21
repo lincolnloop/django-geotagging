@@ -13,14 +13,10 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'geotagging_demo_db'             # Or path to database file if using sqlite3.
-DATABASE_USER = 'django_login'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'django_password'         # Not used with sqlite3.
-DATABASE_HOST = '192.168.1.14'             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = '5432'             # Set to empty string for default. Not used with sqlite3.
+
 
 TEST_RUNNER = 'django.contrib.gis.tests.run_tests'
-POSTGIS_SQL_PATH ='/usr/share/postgresql-8.3-postgis/'
+
 DATABASE_SUPPORTS_TRANSACTIONS = True
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -88,9 +84,6 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'geotagging_tests',
 )
-
-# Google maps api key
-GOOGLE_MAPS_API_KEY = '<Your key shoudl go there>'
 
 # Path to the GeoIP datasets
 GEOIP_PATH = os.path.join(PROJECT_PATH, "geoip_datasets")
