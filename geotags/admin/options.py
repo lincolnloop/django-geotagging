@@ -17,7 +17,6 @@ class GeotagsAdminForm(forms.ModelForm):
     
     
     def full_clean(self):
-        import ipdb; ipdb.set_trace()
         # set geom based on catchall value and erases other geoms
         # TODO allow multiple geoms in one tag
         if '%s-catchall' % self.prefix in self.data:
