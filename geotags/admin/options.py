@@ -10,13 +10,14 @@ from geotags.models import Geotag
 
 class GeotagsAdminForm(forms.ModelForm):
     catchall = forms.CharField(widget=forms.Textarea, required=False)
-    line = GeometryField(widget=forms.HiddenInput,
-                         null=True, geom_type='LINESTRING', srid=4326)
-    polygon = GeometryField(widget=forms.HiddenInput,
-                        null=True, geom_type='POLYGON', srid=4326)
+    line = GeometryField(widget=forms.HiddenInput, null=True, required=False, 
+                         geom_type='LINESTRING', srid=4326)
+    polygon = GeometryField(widget=forms.HiddenInput, null=True, required=False, 
+                            geom_type='POLYGON', srid=4326)
     
     
     def full_clean(self):
+        import ipdb; ipdb.set_trace()
         # set geom based on catchall value and erases other geoms
         # TODO allow multiple geoms in one tag
         if '%s-catchall' % self.prefix in self.data:
