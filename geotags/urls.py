@@ -2,27 +2,10 @@ from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 from django.conf import settings
 
-from geotags.views import add_edit_geotag,kml_feed, kml_feed_map, kml_feeds_map
+from geotags.views import kml_feed, kml_feed_map, kml_feeds_map
 from geotags.views import neighborhood_monitoring, kml_neighborhood_feed
-"""
-UNDER CONSTRUCTION...
-from geotags.forms import PointForm
-from geotags.forms import LineForm
-from geotags.forms import PolygonForm
 
-    url(r'^geo_point/(?P<content_type_id>\d*)/(?P<object_id>\d*)/$',add_edit_geotag,
-        {"form_class":PointForm, "geotag_class":Point,
-         "template":"geotags/add_edit_point.html"}
-        , name="geotags-add_edit_point"),
-    url(r'^geo_line/(?P<content_type_id>\d*)/(?P<object_id>\d*)/$',add_edit_geotag,
-        {"form_class":LineForm,"geotag_class":Line,
-         "template":"geotags/add_edit_point.html"}
-        , name="geotags-add_edit_line"),
-    url(r'^geo_polygon/(?P<content_type_id>\d*)/(?P<object_id>\d*)/$',add_edit_geotag,
-        {"form_class":PolygonForm,"geotag_class":Polygon,
-         "template":"geotags/add_edit_point.html"}
-        , name="geotags-add_edit_polygon"),
-"""
+
 urlpatterns = patterns('',
 
     # KML feeds

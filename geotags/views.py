@@ -12,45 +12,6 @@ from django.views.generic.simple import direct_to_template
 
 from geotags.models import Geotag
 
-def add_edit_geotag(request, content_type_id, object_id,
-                  template=None, form_class=None,
-                  geotag_class=None):
-    """
-    Add a geotag for the current object if it doesn't exist else it update it.
-    Geotag can be a point, a line, a polygon this is specified by the
-    geotag_class.
-
-    """
-    model_class = ContentType.objects.get(id=content_type_id).model_class()
-    object = model_class.objects.get(id=object_id)
-    object_content_type = ContentType.objects.get_for_model(object)
-    try:
-        # TODO : Handle the case of Line and Polygon
-        geotag = geotag_class.objects.get(content_type__pk=object_content_type.id,
-                               object_id=object.id)
-    except ObjectDoesNotExist:
-        geotag = None
-    if request.method == "POST":
-        form = form_class(request.POST, instance=geotag)
-        if form.is_valid():
-            new_object = form.save(commit=False)
-            new_object.object = object
-            new_object.save()
-            return HttpResponseRedirect("/admin/%s/%s/%s/"
-                                        %(object_content_type.app_label,
-                                          object_content_type.model,
-                                          object.id))
-    form = form_class(instance=geotag)
-
-    context = RequestContext(request, {
-        'form': form,
-        'object' : object,
-        "google_key" : settings.GOOGLE_MAPS_API_KEY,
-        'object_content_type' : object_content_type,
-        'geotag' : geotag,
-    })
-    return render_to_response(template, context_instance=context )
-
 def kml_feed(request, template="geotags/geotags.kml",
              geotag_field_name=None, content_type_name=None,
              object_id=None):
@@ -87,7 +48,6 @@ def kml_feed_map(request,template="geotags/view_kml_feed.html",
 
 
     extra_context = {
-        "google_key" : settings.GOOGLE_MAPS_API_KEY,
         "kml_feed" : kml_feed
     }
     return direct_to_template(request,template=template,extra_context=extra_context)
@@ -121,7 +81,6 @@ def kml_feeds_map(request,template="geotags/view_kml_feeds.html",
 
 
     extra_context = {
-        "google_key" : settings.GOOGLE_MAPS_API_KEY,
         "kml_feed_point" : kml_feed_point,
         "kml_feed_line" : kml_feed_line,
         "kml_feed_polygon" : kml_feed_polygon
@@ -192,7 +151,6 @@ def neighborhood_monitoring(request,
         "user_ip" : user_ip,
         "user_location_pnt" : user_location_pnt,
         "geotag_points" : geotag_points,
-        "google_key" : settings.GOOGLE_MAPS_API_KEY,
         "user_city" : gip.city(user_ip),
         "kml_feed" : kml_feed,
     })
