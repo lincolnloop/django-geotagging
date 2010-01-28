@@ -36,12 +36,22 @@ class GeoBaseModelAdmin(BaseModelAdmin):
     map_height = 400
     map_srid = 4326
     map_template = 'gis/admin/openlayers.html'
-    openlayers_url = 'http://openlayers.org/api/2.7/OpenLayers.js'
+    openlayers_url = 'http://openlayers.org/api/2.8/OpenLayers.js'
     wms_url = 'http://labs.metacarta.com/wms/vmap0'
     wms_layer = 'basic'
     wms_name = 'OpenLayers WMS'
     debug = False
     widget = OpenLayersWidget
+    # inject Open Street map if GDAL works
+    from django.contrib.gis import gdal
+    if gdal.HAS_GDAL:
+        map_template = 'gis/admin/osm.html'
+        extra_js = ['http://openstreetmap.org/openlayers/OpenStreetMap.js']
+        num_zoom = 20
+        map_srid = 900913
+        max_extent = '-20037508,-20037508,20037508,20037508'
+        max_resolution = 156543.0339
+        units = 'm'
 
 
     def formfield_for_dbfield(self, db_field, **kwargs):
@@ -104,31 +114,14 @@ class GeoBaseModelAdmin(BaseModelAdmin):
                       'debug' : self.debug,
                       }
         return OLMap
-class GeoModelAdmin(ModelAdmin, GeoBaseModelAdmin):
-    def _media(self):
-        "Injects OpenLayers JavaScript into the admin."
-        media = super(GeoBaseModelAdmin, self)._media()
-        media.add_js([self.openlayers_url])
-        media.add_js(self.extra_js)
-        return media
-    media = property(_media)
-    
+
 # Using the Beta OSM in the admin requires the following:
 #  (1) The Google Maps Mercator projection needs to be added
 #      to your `spatial_ref_sys` table.  You'll need at least GDAL 1.5:
 #      >>> from django.contrib.gis.gdal import SpatialReference
 #      >>> from django.contrib.gis.utils import add_postgis_srs
 #      >>> add_postgis_srs(SpatialReference(900913)) # Adding the Google Projection 
-from django.contrib.gis import gdal
-if gdal.HAS_GDAL:
-    class OSMGeoAdmin(GeoModelAdmin):
-        map_template = 'gis/admin/osm.html'
-        extra_js = ['http://openstreetmap.org/openlayers/OpenStreetMap.js']
-        num_zoom = 20
-        map_srid = 900913
-        max_extent = '-20037508,-20037508,20037508,20037508'
-        max_resolution = 156543.0339
-        units = 'm'
+
 
 #inlines
 class GeoInlineModelAdmin(InlineModelAdmin, GeoBaseModelAdmin):

@@ -66,7 +66,11 @@ class GeotagsAdminForm(forms.ModelForm):
 
 
 class GeotagsInline(GeoGenericStackedInline):
-    map_template = 'geotags/admin/osm_multiwidget.html'
+    map_template = 'geotags/admin/openlayer_multiwidget.html'
+    # inject Open Street map if GDAL works
+    from django.contrib.gis import gdal
+    if gdal.HAS_GDAL:
+        map_template = 'geotags/admin/osm_multiwidget.html'
     template = 'geotags/admin/edit_inline/geotags_inline.html'
     model = Geotag
     max_num = 1
