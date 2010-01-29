@@ -38,7 +38,7 @@ class GetGeotagsNode(template.Node):
 @register.tag
 def get_objects_nearby(parser, token):
     """
-    Populates a context variable with a list of :model:geotagging.Geotag objects
+    Populates a context variable with a list of :model:`geotagging.Geotag` objects
     that are within a given distance of a map geometry (point, line, polygon).
     Example::
     
@@ -46,7 +46,6 @@ def get_objects_nearby(parser, token):
         
     This will find all objects tagged within 5 miles of ``obj.point``. To
     search within a different radius, use the following format::
-    
         
         {% get_objects_nearby obj.point within 10 as nearby_objects %}
     
