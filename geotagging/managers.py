@@ -2,7 +2,6 @@
 Custom managers for Django models registered with the geotagging
 application.
 """
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from geotagging.models import Geotag

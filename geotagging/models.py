@@ -3,7 +3,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
 
 
 class GeotagManager(models.GeoManager):
@@ -24,12 +23,13 @@ class GeotagManager(models.GeoManager):
         """
         geotag_obj = self.get_for_object(obj)
         if not geotag_obj and not geotag:
-            return
+        # you are trying to delete a geotag that does not exist. do nothing
+            return 
         if not geotag_obj:
             ctype = ContentType.objects.get_for_model(obj)
             geotag_obj = self.create(content_type=ctype, object_id=obj.pk)
         if not geotag:
-                geotag_obj.delete()
+            geotag_obj.delete()
         else:
             old_geotag_geom = geotag_obj.get_geom()
             if old_geotag_geom:
@@ -47,20 +47,24 @@ class Geotag(models.Model):
     """
 
     # Content-object field
-    content_type   = models.ForeignKey(ContentType,
-            related_name="content_type_set_for_%(class)s")
-    object_id      = models.PositiveIntegerField(_('object ID'),max_length=50)
-    object = generic.GenericForeignKey(ct_field="content_type", fk_field="object_id")
+    content_type = models.ForeignKey(ContentType,
+                                 related_name="content_type_set_for_%(class)s")
+    object_id = models.PositiveIntegerField(_('object ID'), max_length=50)
+    object = generic.GenericForeignKey(ct_field="content_type", 
+                                       fk_field="object_id")
     
     point = models.PointField(verbose_name=_("point"), blank=True, null=True)
     multilinestring = models.MultiLineStringField(blank=True, null=True)
     line = models.LineStringField(blank=True, null=True)
     polygon = models.PolygonField(blank=True, null=True)
-    geometry_collection = models.GeometryCollectionField(verbose_name=_("geometry collection"), blank=True, null=True)
+    geometry_collection = models.GeometryCollectionField(
+                                        verbose_name=_("geometry collection"), 
+                                        blank=True, null=True)
     
     objects = GeotagManager()
     
     def get_geom(self):
+        """Returns the geometry in use or None"""
         for geom_type in ('point', 'line', 'multilinestring', 
                           'polygon', 'geometry_collection'):
             geom = getattr(self, geom_type)

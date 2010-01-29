@@ -1,4 +1,3 @@
-from django import template
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point, Polygon
@@ -14,7 +13,7 @@ class ModelTest(TestCase):
         except AlreadyRegistered:
             pass
         self.obj = User.objects.create(username='user')
-        self.point = Point(5,5)
+        self.point = Point(5, 5)
         self.poly = Polygon(((0, 0), (0, 10), (10, 10), (0, 10), (0, 0)),
                                ((4, 4), (4, 6), (6, 6), (6, 4), (4, 4)))
         

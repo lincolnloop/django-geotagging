@@ -1,12 +1,12 @@
-from django.conf import settings
-from django.contrib.admin.options import ModelAdmin, BaseModelAdmin, InlineModelAdmin, StackedInline, TabularInline
+from django.contrib.admin.options import BaseModelAdmin, InlineModelAdmin, \
+                                         StackedInline, TabularInline
 from geotagging.fixes.gis.admin.widgets import OpenLayersWidgetFixed as OpenLayersWidget
 
 from django.contrib.gis.gdal import OGRGeomType
 from django.contrib.gis.db import models
 
-from geotagging.fixes.fixed_generic import GenericInlineModelAdmin, GenericStackedInline, GenericTabularInline
-#from django.contrib.contenttypes.generic
+from django.contrib.contenttypes.generic import GenericInlineModelAdmin, \
+                                    GenericStackedInline, GenericTabularInline
 
 class GeoBaseModelAdmin(BaseModelAdmin):
     """

@@ -12,9 +12,9 @@ class TagTestCase(TestCase):
         template.libraries[library] = __import__(library)
         
     def renderTemplate(self, tstr, **context):
-        t = template.Template(tstr)
-        c = template.Context(context)
-        return t.render(c)
+        tmpl = template.Template(tstr)
+        cntxt = template.Context(context)
+        return tmpl.render(cntxt)
 
 class OutputTagTest(TagTestCase):
     
@@ -32,48 +32,50 @@ class OutputTagTest(TagTestCase):
         
     def testOutput(self):
         "get_objects_nearby tag has no output"
-        template = "{% load geotagging %}"\
+        tmpl = "{% load geotagging %}"\
                    "{% get_objects_nearby obj.point as nearby_objs %}"
-        o = self.renderTemplate(template, obj=self.denver)
+        o = self.renderTemplate(tmpl, obj=self.denver)
         self.assertEqual(o.strip(), "")
         
     def testAsVar(self):
-        template = "{% load geotagging %}"\
+        tmpl = "{% load geotagging %}"\
                    "{% get_objects_nearby obj.point as nearby_objs %}"\
                    "{{ nearby_objs|length }}"
-        o = self.renderTemplate(template, obj=self.denver)
+        o = self.renderTemplate(tmpl, obj=self.denver)
         self.assertEqual(o.strip(), "1")
 
     def testShortDistance(self):
         # DIA is about 18 miles from downtown Denver
-        short_template = "{% load geotagging %}"\
+        short_tmpl = "{% load geotagging %}"\
                    "{% get_objects_nearby obj.point as nearby_objs within 17 %}"\
                    "{{ nearby_objs|length }}"
-        o = self.renderTemplate(short_template, obj=self.denver)
+        o = self.renderTemplate(short_tmpl, obj=self.denver)
         self.assertEqual(o.strip(), "1")
-        long_template = short_template.replace("17", "19")
-        o = self.renderTemplate(long_template, obj=self.denver)
+        long_tmpl = short_tmpl.replace("17", "19")
+        o = self.renderTemplate(long_tmpl, obj=self.denver)
         self.assertEqual(o.strip(), "2")
 
     def testLongDistance(self):
         # Ann Arbor is about 1122 miles from Denver
-        short_template = "{% load geotagging %}"\
+        short_tmpl = "{% load geotagging %}"\
                    "{% get_objects_nearby obj.point within 1115 as nearby_objs %}"\
                    "{{ nearby_objs|length }}"
-        o = self.renderTemplate(short_template, obj=self.denver)
+        o = self.renderTemplate(short_tmpl, obj=self.denver)
         self.assertEqual(o.strip(), "2")
-        long_template = short_template.replace("1115", "1125")
-        o = self.renderTemplate(long_template, obj=self.denver)
+        long_tmpl = short_tmpl.replace("1115", "1125")
+        o = self.renderTemplate(long_tmpl, obj=self.denver)
         self.assertEqual(o.strip(), "3")
         
 class SyntaxTagTest(TestCase):
     
-    def getNode(self, str):
+    def getNode(self, strng):
         from geotagging.templatetags.geotagging import get_objects_nearby
-        return get_objects_nearby(None, template.Token(template.TOKEN_BLOCK, str))
+        return get_objects_nearby(None, template.Token(template.TOKEN_BLOCK, 
+                                                       strng))
         
-    def assertNodeException(self, str):
-        self.assertRaises(template.TemplateSyntaxError, self.getNode, str)
+    def assertNodeException(self, strng):
+        self.assertRaises(template.TemplateSyntaxError, 
+                          self.getNode, strng)
 
     def testInvalidSyntax(self):
         self.assertNodeException("get_objects_nearby as")

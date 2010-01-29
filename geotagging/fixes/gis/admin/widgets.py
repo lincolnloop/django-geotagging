@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.gis.admin.widgets import OpenLayersWidget
 from django.contrib.gis.geos import GEOSGeometry, GEOSException
+from django.contrib.gis.gdal import OGRException
 from django.template import loader, Context
 from django.utils import translation
 

@@ -1,6 +1,4 @@
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
-from django.conf import settings
 
 from geotagging.views import kml_feed, kml_feed_map, kml_feeds_map
 from geotagging.views import neighborhood_monitoring, kml_neighborhood_feed

@@ -1,24 +1,26 @@
 import re
 
 from django import forms
-from django.contrib import admin
 from django.contrib.gis.forms import GeometryField
+from django.contrib.gis.gdal import OGRException
 
 from geotagging.fixes.gis.admin.options import GeoGenericStackedInline
 from geotagging.models import Geotag
 
 
 class GeotagsAdminForm(forms.ModelForm):
+    """Custom form to use for inline admin widget"""
     catchall = forms.CharField(widget=forms.Textarea, required=False)
     line = GeometryField(widget=forms.HiddenInput, null=True, required=False, 
                          geom_type='LINESTRING', srid=4326)
-    polygon = GeometryField(widget=forms.HiddenInput, null=True, required=False, 
+    polygon = GeometryField(widget=forms.HiddenInput, null=True, required=False,
                             geom_type='POLYGON', srid=4326)
     
     
     def full_clean(self):
-        # set geom based on catchall value and erases other geoms
-        # TODO allow multiple geoms in one tag
+        """
+        Sets geom based on catchall value and erases any other geoms
+        """
         if '%s-catchall' % self.prefix in self.data:
             value = self.data['%s-catchall' % self.prefix]
             self.data['%s-point' % self.prefix] = ''
@@ -37,17 +39,17 @@ class GeotagsAdminForm(forms.ModelForm):
         
         # Prefill catchall field if geotag already exists
         if self.instance:
-            
-            if self.instance.point:
-                db_field = self.instance.point
-                srid = self.fields['point'].widget.params['srid']
-            elif self.instance.line:
-                db_field = self.instance.line
-                srid = self.fields['line'].srid
-            elif self.instance.polygon:
-                db_field = self.instance.polygon
-                srid = self.fields['polygon'].srid
-            else:
+            found = False
+            # get SRID of map widget
+            srid = self.fields['point'].widget.params['srid']
+            # get srid of geom in model
+            for geom_type in ('point', 'line', 'polygon'):
+                geom = getattr(self.instance, geom_type)
+                if geom:
+                    db_field = geom
+                    found = True
+                    break
+            if not found:
                 return
                 
             # Transforming the geometry to the projection used on the
@@ -66,6 +68,9 @@ class GeotagsAdminForm(forms.ModelForm):
 
 
 class GeotagsInline(GeoGenericStackedInline):
+    """
+    A single inline form for use in the admin
+    """
     map_template = 'geotagging/admin/openlayer_multiwidget.html'
     # inject Open Street map if GDAL works
     from django.contrib.gis import gdal
@@ -78,12 +83,17 @@ class GeotagsInline(GeoGenericStackedInline):
 
     
     def get_formset(self, request, obj=None, **kwargs):
-        fs = super(GeotagsInline, self).get_formset(request, obj=None, **kwargs)
+        """
+        Hacks up the form so we can remove some geometries that OpenLayers
+        can't handle.
+        """
+        fset = super(GeotagsInline, self).get_formset(request, 
+                                                      obj=None, **kwargs)
         # put catchall on top so the javascript can access it
-        fs.form.base_fields.keyOrder.reverse()
-        fs.form.base_fields['point'].label = "Geotag"
+        fset.form.base_fields.keyOrder.reverse()
+        fset.form.base_fields['point'].label = "Geotag"
         # these fields aren't easily editable via openlayers
         for field in ('geometry_collection', 'multilinestring'):
-            fs.form.Meta.exclude.append(field)
-            del(fs.form.base_fields[field])
-        return fs
+            fset.form.Meta.exclude.append(field)
+            del(fset.form.base_fields[field])
+        return fset

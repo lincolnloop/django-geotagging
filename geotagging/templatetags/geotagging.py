@@ -31,7 +31,8 @@ class GetGeotagsNode(template.Node):
         """ 
         # spheroid will result in more accurate results, but at the cost of
         # performance: http://code.djangoproject.com/ticket/6715
-        objects = Geotag.objects.filter(point__distance_lte=(geom, self.distance))
+        objects = Geotag.objects.filter(point__distance_lte=(geom, 
+                                                             self.distance))
         context[self.asvar] = objects
         return ""
 
