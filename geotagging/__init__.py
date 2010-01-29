@@ -11,13 +11,12 @@ class AlreadyRegistered(Exception):
 registry = []
 
 
-def register(model, geotag_descriptor_attr='geotagging',
-             geotagged_item_manager_attr='geotagged'):
+def register(model, geotag_descriptor_attr='geotag'):
     """
     Sets the given model class up for working with geotagging.
     """
 
-    from geotagging.managers import ModelGeotaggedItemManager, GeotagDescriptor
+    from geotagging.managers import GeotagDescriptor
 
     if model in registry:
         raise AlreadyRegistered("The model '%s' has already been "
@@ -26,22 +25,15 @@ def register(model, geotag_descriptor_attr='geotagging',
         raise AttributeError("'%s' already has an attribute '%s'. You must "
             "provide a custom geotag_descriptor_attr to register." % (
                 model._meta.object_name,
-                tag_descriptor_attr,
-            )
-        )
-    if hasattr(model, geotagged_item_manager_attr):
-        raise AttributeError("'%s' already has an attribute '%s'. You must "
-            "provide a custom geotagged_item_manager_attr to register." % (
-                model._meta.object_name,
-                geotagged_item_manager_attr,
+                geotag_descriptor_attr,
             )
         )
 
     # Add tag descriptor
-    setattr(model, tag_descriptor_attr, TagDescriptor())
-
-    # Add custom manager
-    ModelTaggedItemManager().contribute_to_class(model, tagged_item_manager_attr)
+    setattr(model, geotag_descriptor_attr, GeotagDescriptor())
 
     # Finally register in registry
     registry.append(model)
+
+from django.contrib.auth.models import User
+register(User)

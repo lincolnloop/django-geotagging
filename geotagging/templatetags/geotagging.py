@@ -26,7 +26,7 @@ class GetGeotagsNode(template.Node):
         objects = Geotag.objects.filter(
                         Q(point__distance_lte=(geom, self.distance)) |
                         Q(line__distance_lte=(geom, self.distance)) |
-                        Q(multi_line__distance_lte=(geom, self.distance)) |
+                        Q(multilinestring__distance_lte=(geom, self.distance)) |
                         Q(polygon__distance_lte=(geom, self.distance)))
         """ 
         # spheroid will result in more accurate results, but at the cost of

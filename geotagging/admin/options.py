@@ -83,7 +83,7 @@ class GeotagsInline(GeoGenericStackedInline):
         fs.form.base_fields.keyOrder.reverse()
         fs.form.base_fields['point'].label = "Geotag"
         # these fields aren't easily editable via openlayers
-        for field in ('geometry_collection', 'multi_line'):
+        for field in ('geometry_collection', 'multilinestring'):
             fs.form.Meta.exclude.append(field)
             del(fs.form.base_fields[field])
         return fs
