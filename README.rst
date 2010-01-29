@@ -42,6 +42,8 @@ Add the geotag widget to your admin::
         ...
         inlines = [GeotagsInline]
 
+.. image:: http://img.skitch.com/20100129-6p6952tsg2y9s8qwanu62sgms.png
+
 Usage
 -----
 
