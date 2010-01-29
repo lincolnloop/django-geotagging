@@ -7,7 +7,7 @@
 {% for inline_admin_form in inline_admin_formset %}
 <div class="inline-related{% if forloop.last %} last-related{% endif %}">
     {% if inline_admin_formset.formset.can_delete and inline_admin_form.original %}
-  <h3>
+  <h3 style="border:none">
         <span class="delete">{{ inline_admin_form.deletion_field.field }} {{ inline_admin_form.deletion_field.label_tag }}</span>{% endif %}
   </h3>
   {% if inline_admin_form.show_url %}
