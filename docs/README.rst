@@ -24,17 +24,17 @@ What is django-geottaging
 
 django-geotagging is the name of the project which is commposed of 3 building blocks that I am going to details :
 
-geotags
-  This is the django reusable app that allows you to geotags any object in
+geotagging
+  This is the django reusable app that allows you to geotagging any object in
   the django database.
 
 geotagging_demo_project
-  This demo project gives you the possibility to use geotags directly after
+  This demo project gives you the possibility to use geotagging directly after
   the installation.
 
 geotagging_tests
-  This is a django app that contains all the tests of geotags and also a
-  `DummyModel` that you could use to experiment with geotags.
+  This is a django app that contains all the tests of geotagging and also a
+  `DummyModel` that you could use to experiment with geotagging.
 
 Installation
 =============
@@ -48,7 +48,7 @@ Usage
 
 You can use this reusable application in at least 2 ways. You can start with
 project embed  in the repository and extend it with other django apps or you
-can put geotags inside your PYTHONPATH and add it into the INSTALLED_APP.
+can put geotagging inside your PYTHONPATH and add it into the INSTALLED_APP.
 `INSTALL.rst`, inside the `docs` directory, explains how to install this app.
 `TUTORIAL.rst` shows the capability of this reusable app. django-geotagging allows you to :
 

@@ -75,7 +75,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'geotags',
+    'geotagging',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

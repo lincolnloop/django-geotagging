@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Q
 
 # Hack until relative imports
-Geotag = models.get_model("geotags", "geotag")
+Geotag = models.get_model("geotagging", "geotag")
 
 register = template.Library()
 
@@ -38,7 +38,7 @@ class GetGeotagsNode(template.Node):
 @register.tag
 def get_objects_nearby(parser, token):
     """
-    Populates a context variable with a list of :model:geotags.Geotag objects
+    Populates a context variable with a list of :model:geotagging.Geotag objects
     that are within a given distance of a map geometry (point, line, polygon).
     Example::
     

@@ -4,7 +4,7 @@ Tutorial
 
 .. contents::
 
-After reading this page you should be able to use `geotags` in the context of
+After reading this page you should be able to use `geotagging` in the context of
 your project. For practical reason I will use `geotagging_demo_project`  as
 example. The installation of this project is explained in the documentation
 `INSTALL.rst`.
@@ -12,13 +12,13 @@ example. The installation of this project is explained in the documentation
 Geotag contents
 ---------------
 
-`geotags` comes with an handy customization of the django `admin site`, it allows you to
-add edit your geotags directly with in the admin interface.
+`geotagging` comes with an handy customization of the django `admin site`, it allows you to
+add edit your geotagging directly with in the admin interface.
 
 When you edit any object with in the django database you will see 3 buttons in
 the top right corner. They allow you to associate a Point, a Line, a Polygon to it:
 
-.. image:: _images/geotags_buttons.png
+.. image:: _images/geotagging_buttons.png
 
 .. Note:: The geocoder will work only if you use django-grappelli_. It requires jQuery.
 
@@ -36,7 +36,7 @@ intarface for adding a line or a polygon is very similar :
 KML feeds and maps
 ------------------
 
-`geotags` comes with 2 ways to consume the geometries you have associated to your
+`geotagging` comes with 2 ways to consume the geometries you have associated to your
 django objects::
 
 * maps
@@ -62,8 +62,8 @@ points or lines or polygons for a particular content type
 
 Neighborhood monitoring
 -----------------------
-`geotags` comes also with the capability to present to your user the objects
-that have been geotags in their neighborhood.
+`geotagging` comes also with the capability to present to your user the objects
+that have been geotagging in their neighborhood.
 
 * URL : http://127.0.0.1:8000/geotagging/neighborhood_monitoring/10/
 

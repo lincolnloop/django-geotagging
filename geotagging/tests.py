@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point
 
-from geotags.models import Geotag
+from geotagging.models import Geotag
 
 class TagTestCase(TestCase):
     """Helper class with some tag helper functions"""
@@ -19,7 +19,7 @@ class TagTestCase(TestCase):
 class OutputTagTest(TagTestCase):
     
     def setUp(self):
-        self.installTagLibrary('geotags.templatetags.geotags')
+        self.installTagLibrary('geotagging.templatetags.geotagging')
         denver_user = User.objects.create(username='denver')
         dia_user = User.objects.create(username='dia')
         aa_user = User.objects.create(username='annarbor')
@@ -32,13 +32,13 @@ class OutputTagTest(TagTestCase):
         
     def testOutput(self):
         "get_objects_nearby tag has no output"
-        template = "{% load geotags %}"\
+        template = "{% load geotagging %}"\
                    "{% get_objects_nearby obj.point as nearby_objs %}"
         o = self.renderTemplate(template, obj=self.denver)
         self.assertEqual(o.strip(), "")
         
     def testAsVar(self):
-        template = "{% load geotags %}"\
+        template = "{% load geotagging %}"\
                    "{% get_objects_nearby obj.point as nearby_objs %}"\
                    "{{ nearby_objs|length }}"
         o = self.renderTemplate(template, obj=self.denver)
@@ -46,7 +46,7 @@ class OutputTagTest(TagTestCase):
 
     def testShortDistance(self):
         # DIA is about 18 miles from downtown Denver
-        short_template = "{% load geotags %}"\
+        short_template = "{% load geotagging %}"\
                    "{% get_objects_nearby obj.point as nearby_objs within 17 %}"\
                    "{{ nearby_objs|length }}"
         o = self.renderTemplate(short_template, obj=self.denver)
@@ -57,7 +57,7 @@ class OutputTagTest(TagTestCase):
 
     def testLongDistance(self):
         # Ann Arbor is about 1122 miles from Denver
-        short_template = "{% load geotags %}"\
+        short_template = "{% load geotagging %}"\
                    "{% get_objects_nearby obj.point within 1115 as nearby_objs %}"\
                    "{{ nearby_objs|length }}"
         o = self.renderTemplate(short_template, obj=self.denver)
@@ -69,7 +69,7 @@ class OutputTagTest(TagTestCase):
 class SyntaxTagTest(TestCase):
     
     def getNode(self, str):
-        from geotags.templatetags.geotags import get_objects_nearby
+        from geotagging.templatetags.geotagging import get_objects_nearby
         return get_objects_nearby(None, template.Token(template.TOKEN_BLOCK, str))
         
     def assertNodeException(self, str):

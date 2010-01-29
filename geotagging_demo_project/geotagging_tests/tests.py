@@ -1,5 +1,5 @@
 """
-This file test the application geotags. This application can be used
+This file test the application geotagging. This application can be used
 to localised any object of django apps
 """
 
@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis.utils import add_postgis_srs
 
-from geotags.models import Geotag
+from geotagging.models import Geotag
 from geotagging_tests.models import DummyModel
 
 class PointTest(TestCase):
@@ -71,7 +71,7 @@ class TestKmlFeedUrls(TestCase):
                       point='SRID=4326;POINT (17.6 10.1)')
         self.point_baz.save()
     def test_kml_feed_view(self):
-        response = self.client.get(reverse("geotags-kml_feed",
+        response = self.client.get(reverse("geotagging-kml_feed",
                                            kwargs={
                                             "geotag_field_name" : "point",
                                            })
@@ -85,8 +85,8 @@ class TestGeotagsUrls(TestCase):
         self.dummy_obj = DummyModel(name="foo")
         self.dummy_obj.save()
         self.dummy_model_contenttype = ContentType.objects.get(name="dummy model")
-    def test_geotags_add_view(self):
-        response = self.client.get(reverse("geotags-add_edit_point",
+    def test_geotagging_add_view(self):
+        response = self.client.get(reverse("geotagging-add_edit_point",
                                            kwargs={
                                             "content_type_id" : self.dummy_model_contenttype.id,
                                             "object_id" : self.dummy_obj.id
@@ -94,7 +94,7 @@ class TestGeotagsUrls(TestCase):
                                    )
         self.assertEqual(response.status_code,200)
         self.assertEqual(response.context[0]["object"].name, "foo")
-        response = self.client.post(reverse("geotags-add_edit_point",
+        response = self.client.post(reverse("geotagging-add_edit_point",
                                            kwargs={
                                             "content_type_id" : self.dummy_model_contenttype.id,
                                             "object_id" : self.dummy_obj.id

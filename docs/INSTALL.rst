@@ -1,8 +1,8 @@
 Installation
 ============
 
-This documentation explains how to setup geotags with the demo project that comes
-with it. If you are interested to use geotags directly in you own project I
+This documentation explains how to setup geotagging with the demo project that comes
+with it. If you are interested to use geotagging directly in you own project I
 would recommend to read also this documentation :
 
 * Create a virtual env ::
@@ -23,7 +23,7 @@ would recommend to read also this documentation :
 
 * Use pip to grab django-geotagging ::
 
-    pip install -e bzr+http://bazaar.launchpad.net/~yml/django-geotagging/geotags/#egg=django-geotags
+    pip install -e bzr+http://bazaar.launchpad.net/~yml/django-geotagging/geotagging/#egg=django-geotagging
 
 * Create a postgis enabled db ::
 
@@ -52,7 +52,7 @@ would recommend to read also this documentation :
 Tests
 =====
 
-`geotags` reusable application can be tested by using the `geotagging_demo_project`.
+`geotagging` reusable application can be tested by using the `geotagging_demo_project`.
 In order to do so you need go inside the project directory ::
 
     $ cd geotagging_demo_project

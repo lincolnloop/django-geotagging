@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
 
-from geotags.admin.options import GeotagsInline
+from geotagging.admin.options import GeotagsInline
 
 from geotagging_tests.models import DummyModel
 
