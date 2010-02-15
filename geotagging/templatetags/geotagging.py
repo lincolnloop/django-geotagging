@@ -1,4 +1,5 @@
 from django import template
+from django.conf import settings
 from django.contrib.gis.measure import D
 from django.db import models
 from django.db.models import Q
@@ -6,33 +7,46 @@ from django.db.models import Q
 # Hack until relative imports
 Geotag = models.get_model("geotagging", "geotag")
 
+if settings.DATABASE_ENGINE == 'postgresql_psycopg2':
+    from django.contrib.gis.db.backend.postgis.management import \
+                                                          postgis_version_tuple
+    major_minor_str = '.'.join([str(v) for v in postgis_version_tuple()[1:3]])
+    POSTGIS_VERSION = float(major_minor_str)
+else:
+    POSTGIS_VERSION = None
+
 register = template.Library()
 
 class GetGeotagsNode(template.Node):
-    
     def __init__(self, geom, asvar=None, miles=5):
         self.geom = geom
         self.asvar = asvar
         self.distance = D(mi=miles)
+        self.full_geom_search = True
+        # Postgis <1.5 does not support distance lookups on non-point geometries
+        if POSTGIS_VERSION and POSTGIS_VERSION < 1.5:
+            self.full_geom_search = False
         
     def render(self, context):
         try:
             geom = template.resolve_variable(self.geom, context)
         except template.VariableDoesNotExist:
             return ""
-        """
-        # Postgis 1.5 will support using distances against any geometry type
-        # previous versions are point only
-        objects = Geotag.objects.filter(
+            
+        # spheroid will result in more accurate results, but at the cost of
+        # performance: http://code.djangoproject.com/ticket/6715
+        if self.full_geom_search:
+            objects = Geotag.objects.filter(
                         Q(point__distance_lte=(geom, self.distance)) |
                         Q(line__distance_lte=(geom, self.distance)) |
                         Q(multilinestring__distance_lte=(geom, self.distance)) |
                         Q(polygon__distance_lte=(geom, self.distance)))
-        """ 
-        # spheroid will result in more accurate results, but at the cost of
-        # performance: http://code.djangoproject.com/ticket/6715
-        objects = Geotag.objects.filter(point__distance_lte=(geom, 
-                                                             self.distance))
+        else:
+            if geom.geom_type != 'Point':
+                raise template.TemplateSyntaxError("Geotagging Error: This database does not support non-Point geometry distance lookups.")
+            else:
+                objects = Geotag.objects.filter(point__distance_lte=(geom, 
+                                                                 self.distance))
         context[self.asvar] = objects
         return ""
 
