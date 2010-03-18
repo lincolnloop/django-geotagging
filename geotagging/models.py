@@ -11,7 +11,7 @@ try:
     # http://code.djangoproject.com/wiki/GeoDjango1.2#PostGISGeographySupport 
     if connection.ops.geography:
         HAS_GEOGRAPHY = True
-except ValueError:
+except AttributeError:
     pass
     
 def field_kwargs(verbose_name):

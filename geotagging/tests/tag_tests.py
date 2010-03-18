@@ -1,9 +1,9 @@
 from django import template
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import Point, LineString
 
-from geotagging.models import Geotag
+from geotagging.models import Geotag, HAS_GEOGRAPHY
 
 class TagTestCase(TestCase):
     """Helper class with some tag helper functions"""
@@ -23,6 +23,7 @@ class OutputTagTest(TagTestCase):
         denver_user = User.objects.create(username='denver')
         dia_user = User.objects.create(username='dia')
         aa_user = User.objects.create(username='annarbor')
+	self.line = LineString((-104.552299, 38.128626), (-103.211191, 40.715081))
         self.denver = Geotag.objects.create(tagged_obj=denver_user,
                             point=Point(-104.9847034, 39.739153600000002))
         dia = Geotag.objects.create(tagged_obj=dia_user,
@@ -65,6 +66,25 @@ class OutputTagTest(TagTestCase):
         long_tmpl = short_tmpl.replace("1115", "1125")
         o = self.renderTemplate(long_tmpl, obj=self.denver)
         self.assertEqual(o.strip(), "3")
+        
+    def testNonPoint(self):
+        hit_tmpl = "{% load geotagging_tags %}"\
+                   "{% get_objects_nearby line within 50 as nearby_objs %}"\
+                   "{{ nearby_objs|length }}"
+        miss_tmpl = hit_tmpl.replace("50", "10")
+        
+        if HAS_GEOGRAPHY:
+            hit = self.renderTemplate(hit_tmpl, line=self.line)
+            self.assertEqual(hit.strip(), "1")
+            miss = self.renderTemplate(miss_tmpl, line=self.line)
+            self.assertEqual(miss.strip(), "0")
+        else:
+            try:
+                hit = self.renderTemplate(hit_tmpl, line=self.line)
+                # the previous line should always render an exception
+                self.assertEqual(True, False)
+            except template.TemplateSyntaxError, e:
+                self.assertEqual(e.args[0], 'Geotagging Error: This database does not support non-Point geometry distance lookups.')
         
 class SyntaxTagTest(TestCase):
     
