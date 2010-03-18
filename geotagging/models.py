@@ -3,15 +3,15 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
+from django.db import connection
 
 HAS_GEOGRAPHY = False
 try:
     # You need Django 1.2 and PostGIS > 1.5
     # http://code.djangoproject.com/wiki/GeoDjango1.2#PostGISGeographySupport 
-    from django.db.connection.ops import geography
-    if geography:
+    if connection.ops.geography:
         HAS_GEOGRAPHY = True
-except ImportError:
+except ValueError:
     pass
     
 def field_kwargs(verbose_name):
