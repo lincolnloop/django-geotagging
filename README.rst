@@ -9,12 +9,14 @@ Installation
 ------------
 
 Via ``pip``::
-    ``pip install -e git+git://github.com:lincolnloop/django-geotagging.git@inline-widget#egg=django-geotagging``
+    
+    pip install -e git+git://github.com:lincolnloop/django-geotagging.git#egg=django-geotagging
 
-The old fashioned way::
-    1. Download repo http://github.com/lincolnloop/django-geotagging/tarball/inline-widget
-    2. Unpack and ``cd django_geotagging``
-    3. ``python setup.py install``
+The old fashioned way:
+
+1. Download repo http://github.com/lincolnloop/django-geotagging/tarball/master
+2. Unpack and ``cd django_geotagging``
+3. ``python setup.py install``
 
 
 Configuration
