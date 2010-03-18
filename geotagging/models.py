@@ -4,6 +4,28 @@ from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
+HAS_GEOGRAPHY = False
+try:
+    # You need Django 1.2 and PostGIS > 1.5
+    # http://code.djangoproject.com/wiki/GeoDjango1.2#PostGISGeographySupport 
+    from django.db.connection.ops import geography
+    if geography:
+        HAS_GEOGRAPHY = True
+except ImportError:
+    pass
+    
+def field_kwargs(verbose_name):
+    """
+    Build kwargs for field based on the availability of geography fields
+    """
+    kwargs = {
+        'blank': True,
+        'null': True,
+        'verbose_name': _(verbose_name),
+    }
+    if HAS_GEOGRAPHY:
+        kwargs['geography'] = True
+    return kwargs
 
 class GeotagManager(models.GeoManager):
     def get_for_object(self, obj):
@@ -50,16 +72,15 @@ class Geotag(models.Model):
     content_type = models.ForeignKey(ContentType,
                                  related_name="content_type_set_for_%(class)s")
     object_id = models.PositiveIntegerField(_('object ID'), max_length=50)
-    object = generic.GenericForeignKey(ct_field="content_type", 
-                                       fk_field="object_id")
+    tagged_obj = generic.GenericForeignKey(ct_field="content_type", 
+                                           fk_field="object_id")
     
-    point = models.PointField(verbose_name=_("point"), blank=True, null=True)
-    multilinestring = models.MultiLineStringField(blank=True, null=True)
-    line = models.LineStringField(blank=True, null=True)
-    polygon = models.PolygonField(blank=True, null=True)
+    point = models.PointField(**field_kwargs('point'))
+    multilinestring = models.MultiLineStringField(**field_kwargs('multi-line'))
+    line = models.LineStringField(**field_kwargs('line'))
+    polygon = models.PolygonField(**field_kwargs('polygon'))
     geometry_collection = models.GeometryCollectionField(
-                                        verbose_name=_("geometry collection"), 
-                                        blank=True, null=True)
+                                        **field_kwargs('geometry collection'))
     
     objects = GeotagManager()
     

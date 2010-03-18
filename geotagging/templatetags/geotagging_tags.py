@@ -4,16 +4,7 @@ from django.contrib.gis.measure import D
 from django.db import models
 from django.db.models import Q
 
-# Hack until relative imports
-Geotag = models.get_model("geotagging", "geotag")
-
-if settings.DATABASE_ENGINE == 'postgresql_psycopg2':
-    from django.contrib.gis.db.backend.postgis.management import \
-                                                          postgis_version_tuple
-    major_minor_str = '.'.join([str(v) for v in postgis_version_tuple()[1:3]])
-    POSTGIS_VERSION = float(major_minor_str)
-else:
-    POSTGIS_VERSION = None
+from geotagging.models import Geotag, HAS_GEOGRAPHY
 
 register = template.Library()
 
@@ -22,10 +13,6 @@ class GetGeotagsNode(template.Node):
         self.geom = geom
         self.asvar = asvar
         self.distance = D(mi=miles)
-        self.full_geom_search = True
-        # Postgis <1.5 does not support distance lookups on non-point geometries
-        if POSTGIS_VERSION and POSTGIS_VERSION < 1.5:
-            self.full_geom_search = False
         
     def render(self, context):
         try:
@@ -35,7 +22,7 @@ class GetGeotagsNode(template.Node):
             
         # spheroid will result in more accurate results, but at the cost of
         # performance: http://code.djangoproject.com/ticket/6715
-        if self.full_geom_search:
+        if HAS_GEOGRAPHY:
             objects = Geotag.objects.filter(
                         Q(point__distance_lte=(geom, self.distance)) |
                         Q(line__distance_lte=(geom, self.distance)) |
